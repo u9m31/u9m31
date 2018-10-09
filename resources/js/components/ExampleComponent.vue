@@ -8,6 +8,8 @@
                     <div class="card-body">
                         I'm an example component. <br>
                         <span class="test">{{ test }}</span>
+                        <br>
+                        <button v-on:click="axiosLogout">logout</button>
                     </div>
                 </div>
             </div>
@@ -25,10 +27,32 @@
 export default {
     props: {
         test: String,
+        logout: String,
     },
 
     mounted() {
         console.log('ExampleComponent mounted.')
+    },
+
+    methods: {
+        axiosLogout() {
+            axios.post(this.logout)
+            .then( function (response) {
+                console.log(response)
+            }.bind(this))
+
+            .catch(function (error) {
+                console.log(error)
+                if (error.response) {
+                    if (error.response.status) {
+                        if (error.response.status == 401 || error.response.status == 419) {
+                            var parser = new URL(this.logout)
+                            location.href=parser.origin
+                        }
+                    }
+                }
+            }.bind(this))
+        },
     },
 }
 </script>

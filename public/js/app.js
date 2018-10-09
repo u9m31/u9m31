@@ -47752,14 +47752,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
-        test: String
+        test: String,
+        logout: String
     },
 
     mounted: function mounted() {
         console.log('ExampleComponent mounted.');
+    },
+
+
+    methods: {
+        axiosLogout: function axiosLogout() {
+            axios.post(this.logout).then(function (response) {
+                console.log(response);
+            }.bind(this)).catch(function (error) {
+                console.log(error);
+                if (error.response) {
+                    if (error.response.status) {
+                        if (error.response.status == 401 || error.response.status == 419) {
+                            var parser = new URL(this.logout);
+                            location.href = parser.origin;
+                        }
+                    }
+                }
+            }.bind(this));
+        }
     }
 });
 
@@ -47783,7 +47805,11 @@ var render = function() {
             _vm._v("\n                    I'm an example component. "),
             _c("br"),
             _vm._v(" "),
-            _c("span", { staticClass: "test" }, [_vm._v(_vm._s(_vm.test))])
+            _c("span", { staticClass: "test" }, [_vm._v(_vm._s(_vm.test))]),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c("button", { on: { click: _vm.axiosLogout } }, [_vm._v("logout")])
           ])
         ])
       ])

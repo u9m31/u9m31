@@ -26,7 +26,7 @@
 </head>
 <body>
     <div id="app">
-        <example-component test="GET DATA: {{ $_GET['AAA'] }}"></example-component>
+        <example-component test="GET DATA: {{ $_GET['AAA'] }}" logout="{{ route('logout') }}"></example-component>
     </div>
     <script src=" {{ mix('js/app.js') }} "></script>
 </body>
