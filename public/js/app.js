@@ -377,33 +377,6 @@ module.exports = {
 /* 1 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file.
@@ -507,6 +480,33 @@ module.exports = function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
@@ -11659,7 +11659,7 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(41).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(41).setImmediate))
 
 /***/ }),
 /* 6 */
@@ -14200,7 +14200,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
 /* 7 */
@@ -25623,7 +25623,7 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(77);
+module.exports = __webpack_require__(80);
 
 
 /***/ }),
@@ -42852,7 +42852,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(20)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(20)(module)))
 
 /***/ }),
 /* 20 */
@@ -47788,7 +47788,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
 /* 42 */
@@ -47981,7 +47981,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(9)))
 
 /***/ }),
 /* 43 */
@@ -69894,7 +69894,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('r-link', __WEBPACK_IMPORT
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
   mode: 'history',
-  routes: [{ path: '/', name: 'home', component: __WEBPACK_IMPORTED_MODULE_5__components_HomeComponent_vue___default.a, meta: { name: 'ホーム', icon: 'home' } }, { path: '/admin/user', name: 'admin_user', component: __WEBPACK_IMPORTED_MODULE_6__components_Admin_UserComponent_vue___default.a, meta: { name: '社員管理', icon: 'supervisor_account' } }]
+  routes: [{ path: '/admin/user', name: 'admin_user', component: __WEBPACK_IMPORTED_MODULE_6__components_Admin_UserComponent_vue___default.a, meta: { name: '社員管理', icon: 'supervisor_account' } }, { path: '*', name: 'home', component: __WEBPACK_IMPORTED_MODULE_5__components_HomeComponent_vue___default.a, meta: { name: 'ホーム', icon: 'home' } }]
 }));
 
 /***/ }),
@@ -72536,7 +72536,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(58)
 }
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(61)
 /* template */
@@ -72770,7 +72770,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(64)
 /* template */
@@ -73058,7 +73058,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(67)
 }
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(69)
 /* template */
@@ -73232,7 +73232,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(72)
 /* template */
@@ -73362,11 +73362,11 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(75)
 /* template */
-var __vue_template__ = __webpack_require__(76)
+var __vue_template__ = __webpack_require__(79)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -73406,6 +73406,187 @@ module.exports = Component.exports
 
 /***/ }),
 /* 75 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UserDialog_vue__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__UserDialog_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__UserDialog_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'UserComponent',
+
+  components: {
+    'user-dialog': __WEBPACK_IMPORTED_MODULE_0__UserDialog_vue___default.a
+  },
+
+  props: {},
+
+  data: function data() {
+    return {
+      loading: false,
+      search: '',
+      pagination: { sortBy: 'name', descending: false },
+
+      tabledata: [],
+      headers: [{ align: 'center', sortable: false, text: 'No' }, { align: 'left', sortable: true, text: '社員ID', value: 'loginid' }, { align: 'left', sortable: true, text: '氏名', value: 'name' }, { align: 'center', sortable: true, text: '権限', value: 'role' }, { align: 'center', sortable: false, text: 'アクション' }]
+    };
+  },
+
+  created: function created() {
+    if (true) console.log('User Component created.');
+    this.initialize();
+  },
+
+
+  methods: {
+    initialize: function initialize() {
+      this.getUsers();
+    },
+    reload: function reload() {
+      if (true) console.log('User Component reload');
+      this.getUsers();
+    },
+    setsearch: function setsearch(id) {
+      if (true) console.log('User Component set Search');
+      this.search = id;
+    },
+    getUsers: function getUsers() {
+      if (true) console.log('User Component getUsers');
+      this.loading = true;
+      axios.post('/api/admin/user').then(function (response) {
+        this.loading = false;
+        if (true) console.log(response);
+        if (response.data.users) {
+          this.tabledata = response.data.users;
+          this.setRole();
+        }
+      }.bind(this)).catch(function (error) {
+        this.loading = false;
+        console.log(error);
+        if (error.response && [401, 419].includes(error.response.status)) {
+          this.$emit('axios-logout');
+        }
+      }.bind(this));
+    },
+    setRole: function setRole() {
+      for (var i = 0; i < this.tabledata.length; i++) {
+        if (this.tabledata[i].role) {
+          if (this.tabledata[i].role == 5) {
+            this.tabledata[i].role = '管理者';
+          }
+          if (this.tabledata[i].role == 10) {
+            this.tabledata[i].role = 'ユーザ';
+          }
+        }
+      }
+    },
+    dialogOpen: function dialogOpen(item, flg) {
+      if (true) console.log('User Component dialog open');
+      this.$refs.userDialog.open(item, flg || false);
+    }
+  }
+});
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(77)
+/* template */
+var __vue_template__ = __webpack_require__(78)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Admin/UserDialog.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2e65d4be", Component.options)
+  } else {
+    hotAPI.reload("data-v-2e65d4be", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73452,74 +73633,443 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'UserComponent',
+  name: 'UserDialog',
 
-  props: {
-    logout: String
-  },
+  props: {},
 
   data: function data() {
     return {
-      loading: true,
-      search: '',
-      pagination: { sortBy: 'name', descending: false },
+      dialog: false,
+      title: '編集',
+      titlecolor: 'primary',
+      placeholder_password: '',
+      type: '',
 
-      tabledata: [],
-      headers: [{ align: 'center', sortable: false, text: 'No' }, { align: 'left', sortable: true, text: '社員ID', value: 'loginid' }, { align: 'left', sortable: true, text: '氏名', value: 'name' }, { align: 'center', sortable: true, text: '権限', value: 'role' }]
+      items: {
+        loginid: '',
+        name: '',
+        pass: '',
+        role: false
+      },
+      orig: {},
+      error: {},
+
+      rules: {
+        required: function required(value) {
+          return !!value || 'Required.';
+        },
+        min2: function min2(value) {
+          return value.length >= 2 || 'Min 2 characters';
+        },
+        min6: function min6(value) {
+          return value.length >= 6 || 'Min 6 characters';
+        }
+      }
     };
   },
 
   created: function created() {
-    console.log('User Component created.');
-    this.initialize();
+    if (true) console.log('User Dialog created.');
   },
 
 
   methods: {
-    initialize: function initialize() {
-      this.getUsers();
+    clearVar: function clearVar() {
+      this.dialog = true;
+      this.clearError();
+      this.items = JSON.parse(JSON.stringify(this.error));
+      this.orig = JSON.parse(JSON.stringify(this.error));
     },
+    clearError: function clearError() {
+      this.error = {
+        loginid: '',
+        name: '',
+        pass: '',
+        role: false
+      };
+    },
+    close: function close() {
+      if (true) console.log("User Dialog func close");
+      this.dialog = false;
+    },
+    save: function save() {
+      if (true) console.log("User Dialog func save");
 
-    getUsers: function getUsers() {
-      this.loading = true;
-      axios.post('/api/admin/user').then(function (response) {
-        this.loading = false;
-        console.log(response);
-        if (response.data.users) {
-          this.tabledata = response.data.users;
-          this.setRole();
+      // 変更があった時だけ通信
+      if (JSON.stringify(this.orig).replace(/[\s|　]+/g, '') !== JSON.stringify(this.items).replace(/[\s|　]+/g, '')) {
+        this.store();
+      }
+
+      // 変更がなければただ閉じる
+      else {
+          this.close();
         }
+    },
+    open: function open(item, flg) {
+      if (true) console.log("User Dialog func open");
+
+      // INIT VAR
+      this.clearVar();
+
+      // SET TYPE
+      if (flg) this.type = 'D'; // DELETE
+      else if (item) this.type = 'U'; // UPDATE
+        else this.type = 'C'; // CREATE
+
+      // USER CREATE
+      if (this.type == 'C') {
+        this.title = "新規追加";
+        this.titlecolor = 'primary', this.placeholder_password = "パスワードを指定してください（未指定の場合はログインＩＤを設定）";
+      }
+
+      // USER UPDATE
+      if (this.type == 'U') {
+        this.title = "編集";
+        this.titlecolor = 'accent', this.placeholder_password = "変更する場合はパスワードを指定してください（未指定の場合は変更しない）";
+      }
+
+      // USER DELETE
+      if (this.type == 'D') {
+        this.title = "削除";
+        this.titlecolor = 'error', this.placeholder_password = "";
+      }
+
+      // SET ITEM
+      if (item) {
+        if (item.loginid) this.items.loginid = item.loginid;
+        if (item.name) this.items.name = item.name;
+        if (item.role) {
+          if (item.role == '管理者') {
+            this.items.role = true;
+          }
+        }
+        // COPY ORIG
+        this.orig = JSON.parse(JSON.stringify(this.items));
+      }
+    },
+    store: function store() {
+      if (true) console.log("User Dialog func store");
+      var params = new URLSearchParams();
+      params.append('loginid', this.items.loginid);
+      params.append('name', this.items.name);
+      params.append('pass', this.items.pass);
+      params.append('role', this.items.role ? 5 : 10);
+      params.append('type', this.type);
+
+      this.clearError();
+
+      axios.post('/api/admin/user/store', params).then(function (response) {
+        this.$emit('reload');
+        alert(this.items.name + "を保存しました");
+        this.close(); // 保存が正常終了したら閉じる
       }.bind(this)).catch(function (error) {
-        this.loading = false;
+        if (true) console.log("User Dialog store error");
         console.log(error);
-        if (error.response) {
-          if (error.response.status) {
-            if (error.response.status == 401 || error.response.status == 419) {
-              this.$emit('axios-logout');
+        if (error.response && [401, 419].includes(error.response.status)) {
+          this.$emit('axios-logout');
+        } else if (error.response && [423].includes(error.response.status)) {
+          this.$emit('setsearch', this.items.loginid);
+          alert(error.response.data.message);
+          return;
+        } else if (error.response && [422].includes(error.response.status)) {
+          alert(error.response.data.message);
+          if (error.response.data.errors) {
+            for (var key in this.error) {
+              if (error.response.data.errors[key]) {
+                this.error[key] = error.response.data.errors[key];
+              }
             }
           }
+          return;
         }
+        this.close();
       }.bind(this));
     },
-    setRole: function setRole() {
-      for (var i = 0; i < this.tabledata.length; i++) {
-        if (this.tabledata[i].role) {
-          if (this.tabledata[i].role == 5) {
-            this.tabledata[i].role = '管理者';
-          }
-          if (this.tabledata[i].role == 10) {
-            this.tabledata[i].role = 'ユーザ';
-          }
+    destroy: function destroy() {
+      if (true) console.log("User Dialog func destroy");
+      var params = new URLSearchParams();
+      params.append('loginid', this.items.loginid);
+
+      axios.post('/api/admin/user/destroy', params).then(function (response) {
+        this.$emit('reload');
+        alert(this.items.name + "\n" + "を削除しました");
+        this.close(); // 保存が正常終了したら閉じる
+      }.bind(this)).catch(function (error) {
+        if (true) console.log("User Dialog destroy error");
+        console.log(error);
+        if (error.response && [401, 419].includes(error.response.status)) {
+          this.$emit('axios-logout');
         }
-      }
+        if (error.response && [422].includes(error.response.status)) {
+          alert(error.response.data.message);
+          return;
+        }
+        this.close();
+      }.bind(this));
     }
   }
 });
 
 /***/ }),
-/* 76 */
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "transition",
+    { attrs: { name: "fade" } },
+    [
+      _c(
+        "v-dialog",
+        {
+          attrs: { "max-width": "650px", persistent: "" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-btn",
+            {
+              staticClass: "mb-2",
+              attrs: {
+                slot: "activator",
+                color: "primary",
+                dark: "",
+                flat: ""
+              },
+              on: {
+                click: function($event) {
+                  _vm.open(null)
+                }
+              },
+              slot: "activator"
+            },
+            [_c("v-icon", { staticClass: "pr-2" }, [_vm._v("person_add")])],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card",
+            [
+              _c(
+                "v-toolbar",
+                { attrs: { color: _vm.titlecolor, dark: "" } },
+                [
+                  _c(
+                    "v-toolbar-title",
+                    [
+                      _c("v-icon", { staticClass: "pb-1" }, [
+                        _vm._v(_vm._s(_vm.$route.meta.icon))
+                      ]),
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.$route.meta.name) +
+                          " | " +
+                          _vm._s(_vm.title)
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { column: "", wrap: "" } },
+                        [
+                          _c("v-text-field", {
+                            staticClass: "pb-3",
+                            attrs: {
+                              label: "名前",
+                              placeholder: "氏名を入力してください",
+                              "error-messages": _vm.error.name,
+                              rules: [_vm.rules.required, _vm.rules.min2],
+                              maxlength: "64",
+                              required: "",
+                              counter: "",
+                              disabled: _vm.type == "D"
+                            },
+                            model: {
+                              value: _vm.items.name,
+                              callback: function($$v) {
+                                _vm.$set(_vm.items, "name", $$v)
+                              },
+                              expression: "items.name"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("v-text-field", {
+                            staticClass: "pb-3",
+                            attrs: {
+                              label: "ログインID",
+                              placeholder: "社員ＩＤを入力してください",
+                              "error-messages": _vm.error.loginid,
+                              rules: [_vm.rules.required, _vm.rules.min6],
+                              maxlength: "128",
+                              required: "",
+                              counter: "",
+                              disabled: _vm.type != "C"
+                            },
+                            model: {
+                              value: _vm.items.loginid,
+                              callback: function($$v) {
+                                _vm.$set(_vm.items, "loginid", $$v)
+                              },
+                              expression: "items.loginid"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("v-text-field", {
+                            staticClass: "pb-2",
+                            attrs: {
+                              label: "パスワード",
+                              placeholder: _vm.placeholder_password,
+                              "error-messages": _vm.error.pass,
+                              maxlength: "128",
+                              counter: "",
+                              disabled: _vm.type == "D"
+                            },
+                            model: {
+                              value: _vm.items.pass,
+                              callback: function($$v) {
+                                _vm.$set(_vm.items, "pass", $$v)
+                              },
+                              expression: "items.pass"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("v-checkbox", {
+                            attrs: {
+                              label: "管理者権限",
+                              disabled: _vm.type == "D"
+                            },
+                            model: {
+                              value: _vm.items.role,
+                              callback: function($$v) {
+                                _vm.$set(_vm.items, "role", $$v)
+                              },
+                              expression: "items.role"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "gray    darken-1", flat: "", block: "" },
+                      nativeOn: {
+                        click: function($event) {
+                          return _vm.close($event)
+                        }
+                      }
+                    },
+                    [_vm._v("キャンセル")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.type != "D",
+                          expression: "type != 'D'"
+                        }
+                      ],
+                      attrs: { color: "primary darken-1", flat: "", block: "" },
+                      nativeOn: {
+                        click: function($event) {
+                          return _vm.save($event)
+                        }
+                      }
+                    },
+                    [_vm._v("保存")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.type == "D",
+                          expression: "type == 'D'"
+                        }
+                      ],
+                      attrs: { color: "error   darken-1", flat: "", block: "" },
+                      nativeOn: {
+                        click: function($event) {
+                          return _vm.destroy($event)
+                        }
+                      }
+                    },
+                    [_vm._v("削除")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2e65d4be", module.exports)
+  }
+}
+
+/***/ }),
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -73547,16 +74097,22 @@ var render = function() {
                   _vm._s(/* 社員管理 */) +
                   "\n      "
               ),
+              _c("user-dialog", {
+                ref: "userDialog",
+                on: { reload: _vm.reload, setsearch: _vm.setsearch }
+              }),
+              _vm._v(" "),
               _c("v-spacer"),
               _vm._v(" "),
               _c("v-spacer"),
               _vm._v(" "),
               _c("v-text-field", {
                 attrs: {
-                  "append-icon": "search",
+                  "prepend-icon": "search",
                   label: "Search",
                   "single-line": "",
-                  "hide-details": ""
+                  "hide-details": "",
+                  clearable: ""
                 },
                 model: {
                   value: _vm.search,
@@ -73613,7 +74169,7 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _vm._l(_vm.headers.length - 1, function(n) {
+                          _vm._l(_vm.headers.length - 2, function(n) {
                             return [
                               _c("td", {
                                 class: "text-xs-" + _vm.headers[n].align,
@@ -73625,7 +74181,55 @@ var render = function() {
                                 }
                               })
                             ]
-                          })
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            {
+                              staticClass: "text-xs-center",
+                              attrs: { xs1: "" }
+                            },
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { flat: "", small: "", fab: "" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.dialogOpen(props.item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "v-icon",
+                                    { attrs: { color: "success" } },
+                                    [_vm._v("edit")]
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { flat: "", small: "", fab: "" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.dialogOpen(props.item, true)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("v-icon", { attrs: { color: "error" } }, [
+                                    _vm._v("delete")
+                                  ])
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
                         ],
                         2
                       )
@@ -73660,7 +74264,7 @@ if (false) {
 }
 
 /***/ }),
-/* 77 */
+/* 80 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

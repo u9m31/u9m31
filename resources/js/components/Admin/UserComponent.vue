@@ -4,14 +4,16 @@
 
       <v-card-title class="title">
         <v-icon class="pr-2">{{ $route.meta.icon }}</v-icon> {{ $route.meta.name }} {{ /* 社員管理 */ }}
+        <user-dialog ref="userDialog" @reload="reload" @setsearch="setsearch"></user-dialog>
         <v-spacer></v-spacer>
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
-          append-icon="search"
+          prepend-icon="search"
           label="Search"
           single-line
           hide-details
+          clearable
         ></v-text-field>
       </v-card-title>
 
@@ -29,9 +31,13 @@
         <template slot="items" slot-scope="props">
           <tr>
             <td class="text-xs-center" xs1>{{ (props.index + 1) + (pagination.page - 1) * pagination.rowsPerPage }}</td>
-            <template v-for="n in (headers.length - 1)">
+            <template v-for="n in (headers.length - 2)">
               <td :class="'text-xs-' + headers[n].align" style="white-space: nowrap;" v-text="props.item[headers[n].value]"></td>
             </template>
+            <td class="text-xs-center" xs1>
+              <v-btn flat small fab @click="dialogOpen(props.item)"><v-icon color="success">edit</v-icon></v-btn>
+              <v-btn flat small fab @click="dialogOpen(props.item,true)"><v-icon color="error">delete</v-icon></v-btn>
+            </td>
           </tr>
         </template>
 
@@ -41,15 +47,20 @@
 </template>
 
 <script>
+  import user_dialog from './UserDialog.vue'
+
   export default {
     name: 'UserComponent',
 
+    components: {
+      'user-dialog': user_dialog,
+    },
+
     props: {
-      logout: String,
     },
 
     data: () => ({
-      loading: true,
+      loading: false,
       search: '',
       pagination: { sortBy: 'name', descending: false, },
 
@@ -59,26 +70,38 @@
         { align: 'left',   sortable: true,  text: '社員ID',   value: 'loginid' },
         { align: 'left',   sortable: true,  text: '氏名',     value: 'name' },
         { align: 'center', sortable: true,  text: '権限',     value: 'role' },
+        { align: 'center', sortable: false, text: 'アクション',       },
       ],
     }),
 
     created() {
-      console.log('User Component created.')
+      if (process.env.MIX_DEBUG) console.log('User Component created.')
       this.initialize()
     },
 
     methods: {
-      initialize: function() {
+      initialize() {
         this.getUsers()
       },
 
+      reload() {
+        if (process.env.MIX_DEBUG) console.log('User Component reload')
+        this.getUsers()
+      },
+
+      setsearch(id) {
+        if (process.env.MIX_DEBUG) console.log('User Component set Search')
+        this.search = id
+      },
+
       getUsers() {
+        if (process.env.MIX_DEBUG) console.log('User Component getUsers')
         this.loading = true
         axios.post('/api/admin/user')
 
         .then( function (response) {
           this.loading = false
-console.log(response)
+          if (process.env.MIX_DEBUG) console.log(response)
           if (response.data.users) {
             this.tabledata = response.data.users
             this.setRole()
@@ -88,12 +111,8 @@ console.log(response)
         .catch(function (error) {
           this.loading = false
           console.log(error)
-          if (error.response) {
-            if (error.response.status) {
-              if (error.response.status == 401 || error.response.status == 419) {
-                this.$emit('axios-logout')
-              }
-            }
+          if (error.response && [401, 419].includes(error.response.status)) {
+            this.$emit('axios-logout')
           }
         }.bind(this))
       },
@@ -106,6 +125,11 @@ console.log(response)
           }
         }
       },
+
+      dialogOpen(item,flg) {
+        if (process.env.MIX_DEBUG) console.log('User Component dialog open')
+        this.$refs.userDialog.open(item, (flg || false))
+      }
     },
   }
 </script>
