@@ -14,7 +14,7 @@ import Vue from 'vue'
 // Vuetify
 import Vuetify from 'vuetify'
 import colors from 'vuetify/es5/util/colors'
-
+/*
 Vue.use(Vuetify, {
   theme: {
     primary: colors.amber.base,
@@ -22,12 +22,18 @@ Vue.use(Vuetify, {
     accent: colors.indigo.base,
   }
 });
+*/
+Vue.use(Vuetify)
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 
 // Vue-Router
 import router from './router'
+
+
+// moment
+window.moment = require('moment')
 
 
 // Main app

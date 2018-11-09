@@ -22,6 +22,7 @@
     "dependencies": {
         "css-loader": "^1.0.0",
         "material-design-icons-iconfont": "^3.0.3",
+        "moment": "^2.22.2",
         "vue-router": "^3.0.1",
         "vuetify": "^1.2.9"
     }
