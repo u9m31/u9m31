@@ -20,6 +20,7 @@ export default new Router({
   mode: 'history',
   routes: [
     { path: '/admin/user',   name: 'admin_user',    component: admin_user,    meta: {name: '社員管理', icon: 'supervisor_account'}},
-    { path: '*',             name: 'home',          component: home,          meta: {name: 'ホーム',   icon: 'home'}},
+    { path: '/home',         name: 'home',          component: home,          meta: {name: 'ホーム',   icon: 'home'}},
+    { path: '*',             redirect: '/home' },
   ],
 })

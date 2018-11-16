@@ -28,6 +28,7 @@ Route::group( ['middleware' => ['auth', 'can:admin']], function() {
   Route::post('/api/admin/user/store', 'UserController@store')->name('admin/user/store');
   Route::post('/api/admin/user/destroy', 'UserController@destroy')->name('admin/user/destroy');
   Route::post('/api/admin/user/download', 'UserController@download')->name('admin/user/download');
+  Route::post('/api/admin/user/upload', 'UserController@upload')->name('admin/user/upload');
 });
 
 // Other
