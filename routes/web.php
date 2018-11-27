@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('home');
 })->middleware('auth');
 
+Route::get('/pdf', 'DocumentController@downloadPdf')->name('pdf');
+
 // Authentication Routes...
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('/login', 'Auth\LoginController@login');
