@@ -2,13 +2,15 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 
-class User extends Authenticatable
+class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Notifiable;
+    use Authenticatable, Authorizable;
 
     /**
      * The attributes that are mass assignable.
@@ -16,12 +18,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 
-//        'email', 
-        'loginid', 
+        'name',
+        'loginid',   // 対象者ログインID
         'password',
         'role', 
     ];
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -29,7 +31,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 
+        'password',
         'remember_token',
     ];
+
+    public function payslips()
+    {
+        return $this -> hasMany('App\Payslip');
+    }
 }
