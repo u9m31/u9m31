@@ -79,7 +79,9 @@
 
           // 追加送信パラメータ設定（指定があれば）
           if (this.updata) {
-            formData.append(this.updata.key, this.updata.value)
+            for (let key in this.updata) {
+              formData.append(key, this.updata[key])
+            }
           }
 
           // アップロード実行
@@ -98,18 +100,28 @@
           .catch(function (error) {
             this.csvuploading = false
             if (process.env.MIX_DEBUG) console.log("CSV Upload error")
-            if (process.env.MIX_DEBUG) console.log(error.response)
-            if (error.response && [401, 419].includes(error.response.status)) {
-              this.$emit('axios-logout')
-            }
-            else if (error.response && [422].includes(error.response.status)) {
-              if (error.response.data.errors) {
-                for (let key in error.response.data.errors) {
-                  if (error.response.data.errors[key]) {
-                    alert(file.name + ' : ' + error.response.data.errors[key])
+            if (process.env.MIX_DEBUG) console.log(error)
+            if (error.response) {
+              if ([401, 419].includes(error.response.status)) {
+                this.$emit('axios-logout')
+              }
+              else if ([422].includes(error.response.status)) {
+                if (process.env.MIX_DEBUG) console.log("CSV Upload error 422")
+                if (process.env.MIX_DEBUG) console.log(error.response.data.errors)
+                if (error.response.data.errors) {
+                  for (let key in error.response.data.errors) {
+                    if (error.response.data.errors[key]) {
+                      alert(file.name + ' : ' + error.response.data.errors[key])
+                    }
                   }
                 }
               }
+              else {
+                alert('ERROR ' + error.response.status + ' ' + error.response.statusText)
+              }
+            }
+            else {
+              alert('ERROR ' + error)
             }
           }.bind(this))
 
@@ -137,11 +149,11 @@
           res.result += this.getResult(data.insert, '新規 : ', ' レコード')
         }
 
-        // ダイアログを開く
-        this.$refs.UploadDialog.open(file, res)
-
         //  一覧を再読み込み
         this.$emit('reload')
+
+        // ダイアログを開く
+        this.$refs.UploadDialog.open(file, res)
       },
 
       getResult(data, comment1, comment2) {

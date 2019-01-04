@@ -4,6 +4,7 @@
       <v-list dense>
         <r-link linkname='home'></r-link>
         <r-link linkname='admin_user'></r-link>
+        <r-link linkname='admin_payslip'></r-link>
       </v-list>
     </v-navigation-drawer>
 

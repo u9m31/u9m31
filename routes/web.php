@@ -31,6 +31,11 @@ Route::group( ['middleware' => ['auth', 'can:admin']], function() {
   Route::post('/api/admin/user/destroy', 'UserController@destroy')->name('admin/user/destroy');
   Route::post('/api/admin/user/download', 'UserController@download')->name('admin/user/download');
   Route::post('/api/admin/user/upload', 'UserController@upload')->name('admin/user/upload');
+
+  // Payslip
+  Route::post('/api/admin/payslip/csvlist', 'PayslipController@csvlist')->name('admin/payslip/csvlist');
+  Route::post('/api/admin/payslip/upload', 'PayslipController@upload')->name('admin/payslip/upload');
+
 });
 
 // Other

@@ -10,7 +10,6 @@ require('./bootstrap');
 // Vue
 import Vue from 'vue'
 
-
 // Vuetify
 import Vuetify from 'vuetify'
 import colors from 'vuetify/es5/util/colors'
@@ -27,10 +26,11 @@ Vue.use(Vuetify)
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+// Font Awesome
+import '@fortawesome/fontawesome-free/css/all.css'
 
 // Vue-Router
 import router from './router'
-
 
 // moment
 window.moment = require('moment')
