@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
+use Carbon\Carbon;
+
 use App\User;
 use App\CsvPayslip;
 use App\Payslip;
@@ -19,23 +21,60 @@ class PayslipController extends Controller
     {
         Log::Debug(__CLASS__.':'.__FUNCTION__, $request->all());
 
-        // INIT
-        $where = array();
+        // 検索条件指定準備
+        $query = CsvPayslip::query();
 
-        // 検索条件確認 - 対象年月（未指定の場合は全期間を対象とする）
+        // -- 削除済みを含む
+        if (array_key_exists('deleted', $request -> all())) {
+          if ($request -> deleted == 'true') {
+            $query -> withTrashed();
+          }
+        }
+
+        // -- 対象年月（未指定の場合は全期間を対象とする）
         $ym = $this -> getYM($request -> all(), false);
         if (is_object($ym)) { return $ym; } // 期間エラー
         if ($ym) {
-            $where['ym'] = $ym;
+          $query -> where('ym', '=', $ym);
         }
 
-        if ($where) {
-            $CsvPayslips = CsvPayslip::where($where)->get();
-        }
-        else {
-            $CsvPayslips = CsvPayslip::all();
-        }
+        // データ取得 orderby 年月 / id
+        $CsvPayslips = $query -> orderBy('ym','desc')
+                              -> orderBy('id', 'desc')
+                              -> get();
+
+        // 検索結果を戻す
         return ['data' => $CsvPayslips];
+    }
+
+
+    public function delete(Request $request)
+    {
+        Log::Debug(__CLASS__.':'.__FUNCTION__, $request->all());
+
+        // 対象データ削除
+        $csv_payslip = CsvPayslip::find($request -> id);
+        if ($csv_payslip) {
+            $csv_payslip -> delete();
+        }
+        return;
+    }
+
+
+    public function publish(Request $request)
+    {
+        Log::Debug(__CLASS__.':'.__FUNCTION__, $request->all());
+
+        // 更新データ生成
+        $data['published_at'] = Carbon::now();
+        $data['status'] = '1';
+
+        // 対象データ更新
+        $csv_payslip = CsvPayslip::find($request -> id);
+        if ($csv_payslip) {
+            $csv_payslip -> fill($data) -> save();
+        }
+        return;
     }
 
 

@@ -35,6 +35,8 @@ Route::group( ['middleware' => ['auth', 'can:admin']], function() {
   // Payslip
   Route::post('/api/admin/payslip/csvlist', 'PayslipController@csvlist')->name('admin/payslip/csvlist');
   Route::post('/api/admin/payslip/upload', 'PayslipController@upload')->name('admin/payslip/upload');
+  Route::post('/api/admin/payslip/publish', 'PayslipController@publish')->name('admin/payslip/publish');
+  Route::post('/api/admin/payslip/delete', 'PayslipController@delete')->name('admin/payslip/delete');
 
 });
 
