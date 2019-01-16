@@ -32,11 +32,16 @@ Route::group( ['middleware' => ['auth', 'can:admin']], function() {
   Route::post('/api/admin/user/download', 'UserController@download')->name('admin/user/download');
   Route::post('/api/admin/user/upload', 'UserController@upload')->name('admin/user/upload');
 
+  // CsvPayslip
+  Route::post('/api/admin/csvpayslip/index', 'CsvPayslipController@index')->name('admin/csvpayslip/index');
+  Route::post('/api/admin/csvpayslip/upload', 'CsvPayslipController@upload')->name('admin/csvpayslip/upload');
+  Route::post('/api/admin/csvpayslip/delete', 'CsvPayslipController@delete')->name('admin/csvpayslip/delete');
+  Route::post('/api/admin/csvpayslip/publish', 'CsvPayslipController@publish')->name('admin/csvpayslip/publish');
+
   // Payslip
-  Route::post('/api/admin/payslip/csvlist', 'PayslipController@csvlist')->name('admin/payslip/csvlist');
-  Route::post('/api/admin/payslip/upload', 'PayslipController@upload')->name('admin/payslip/upload');
-  Route::post('/api/admin/payslip/publish', 'PayslipController@publish')->name('admin/payslip/publish');
+  Route::post('/api/admin/payslip/index', 'PayslipController@index')->name('admin/payslip/index');
   Route::post('/api/admin/payslip/delete', 'PayslipController@delete')->name('admin/payslip/delete');
+  Route::post('/api/admin/payslip/pdf', 'PayslipController@pdf')->name('admin/payslip/pdf');
 
 });
 

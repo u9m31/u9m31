@@ -41,7 +41,7 @@
       </v-card-text>
       
       <v-card-actions>
-        <v-btn color="gray    darken-1" flat block @click.native="close">キャンセル</v-btn>
+        <v-btn color="grey    darken-1" flat block @click.native="close">キャンセル</v-btn>
         <v-btn color="primary darken-1"  flat block @click.native="save" v-show="type != 'D'">保存</v-btn>
         <v-btn color="error   darken-1"  flat block @click.native="destroy" v-show="type == 'D'">削除</v-btn>
       </v-card-actions>

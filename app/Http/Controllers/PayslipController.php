@@ -3,245 +3,206 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-
-use Carbon\Carbon;
 
 use App\User;
 use App\CsvPayslip;
 use App\Payslip;
-use App\Facades\Csv;
-use App\Http\Requests\UploadCsvFile;
+
+use TCPDF;
+use TCPDF_FONTS;
 
 class PayslipController extends Controller
 {
 
-    public function csvlist(Request $request)
+    public function index(Request $request)
     {
         Log::Debug(__CLASS__.':'.__FUNCTION__, $request->all());
 
         // 検索条件指定準備
-        $query = CsvPayslip::query();
+        $query = Payslip::query();
+        $query -> withTrashed();
 
-        // -- 削除済みを含む
-        if (array_key_exists('deleted', $request -> all())) {
-          if ($request -> deleted == 'true') {
-            $query -> withTrashed();
-          }
+        // 対象 CSV_ID 指定
+        if (array_key_exists('id', $request -> all())) {
+          $query -> where('csv_id', '=', $request -> id);
         }
 
-        // -- 対象年月（未指定の場合は全期間を対象とする）
-        $ym = $this -> getYM($request -> all(), false);
-        if (is_object($ym)) { return $ym; } // 期間エラー
-        if ($ym) {
-          $query -> where('ym', '=', $ym);
-        }
-
-        // データ取得 orderby 年月 / id
-        $CsvPayslips = $query -> orderBy('ym','desc')
-                              -> orderBy('id', 'desc')
+        // データ取得 orderby 年月 / id 
+        $Payslips = $query -> orderBy('line','asc') 
                               -> get();
 
         // 検索結果を戻す
-        return ['data' => $CsvPayslips];
+        return ['data' => $Payslips];
     }
 
-
+    
     public function delete(Request $request)
     {
         Log::Debug(__CLASS__.':'.__FUNCTION__, $request->all());
+        Log::Debug(__CLASS__.':'.__FUNCTION__.' user id '. $request -> user() -> id);
+        Log::Debug(__CLASS__.':'.__FUNCTION__.' del  id '. $request -> id);
 
         // 対象データ削除
-        $csv_payslip = CsvPayslip::find($request -> id);
-        if ($csv_payslip) {
-            $csv_payslip -> delete();
+        $payslip = Payslip::find($request -> id);
+//        Log::Debug(__CLASS__.':'.__FUNCTION__, $payslip);
+        if ($payslip) {
+            $payslip -> fill(['delete_user_id' => $request -> user() -> id]) -> save();
+            $payslip -> delete();
         }
-        return;
+        return ['data' => $payslip];
     }
 
 
-    public function publish(Request $request)
+    public function pdf(Request $request)
     {
         Log::Debug(__CLASS__.':'.__FUNCTION__, $request->all());
-
-        // 更新データ生成
-        $data['published_at'] = Carbon::now();
-        $data['status'] = '1';
-
-        // 対象データ更新
-        $csv_payslip = CsvPayslip::find($request -> id);
-        if ($csv_payslip) {
-            $csv_payslip -> fill($data) -> save();
-        }
-        return;
-    }
-
-
-    public function upload(UploadCsvFile $request)
-    {
-        Log::Debug(__CLASS__.':'.__FUNCTION__, $request->all());
-
-        // CSV をパース
-        $file = $request -> file('csvfile');
-        $rows = $this -> parse_csv($file);
-        if (is_object($rows)) { return $rows; }
-
-        // 対象年月を取得 (数字以外はすべて削除してから取得）
-        $ym = $this -> getYM($request -> all());
-        if (is_object($ym)) { return $ym; }
 
         // INIT
-        $ret = array();
-        $header_columns = 0;
+        mb_internal_encoding("UTF-8");
 
-        // １行ずつ処理 - ループ処理でデータエラーがあっても処理は継続
-        foreach ($rows as $line => $value) {
-            Log::Debug(__CLASS__.':'.__FUNCTION__.' '. ($line + 1) .'/'. count($rows) .' : '. print_r($value, true));
+        // データ確認 ＆ 取得 -- エラーがあれば処理終了
+        $payslip = $this -> validate_pdf($request);
+        if (is_object($payslip)) { 
+            Log::Debug(__CLASS__.':'.__FUNCTION__.' - ERROR - '. print_r($payslip, true));
+            return $payslip;
+        }
 
-            // INIT
-            $wk = '';
-            $data = array();
+        // PDF 情報生成
+        $data = $this -> make_pdf_data($payslip);
 
-            // １行目ならヘッダー情報を保存
-            if ($line == 0) {
-                // CSV 情報を保存
-                $csv_payslip = $this -> insertCsvPayslip( $ym, $file, $value );
-                if (!$csv_payslip) {
-                    return new JsonResponse(['errors' => [ 'database' => '内部エラー csv payslip insert error']], 422);
-                }
+        // PDF 生成メイン　－　A4 縦に設定
+        $pdf = new TCPDF("P", "mm", "A4", true, "UTF-8" );
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
 
-                // ヘッダーの項目数を取得
-                $header_columns = count($value);
-                continue; // ヘッダーはそのまま次の行へ
-            }
+        // PDF プロパティ設定
+        $pdf->SetTitle('給与明細　'. $data['ym'] .'　'. $data['name']);       // PDFドキュメントのタイトルを設定
+        $pdf->SetAuthor($data['company']);                                    // PDFドキュメントの著者名を設定
+        $pdf->SetSubject($data['filename']);                                  // PDFドキュメントのサブジェクト(表題)を設定
+        $pdf->SetKeywords('給与明細　'. $data['ym'] .'　'. $data['name']);    // PDFドキュメントのキーワードを設定
+        $pdf->SetCreator($data['company'].'　u9m31');                         // PDFドキュメントの製作者名を設定
 
-            // ＣＳＶ行データのカラム数チェック（ヘッダーのカラム数と違ったらエラー）
-            if (count($value) != $header_columns) {
-                $wk = 'ヘッダーの項目数('.$header_columns.'）と行の項目数('.count($value).')が一致しません';
-                $ret['errors'][] = ['line' => $line, 'message' => $wk];
-                $data['error'] = $wk;
-                Log::Debug(__CLASS__.':'.__FUNCTION__.' '. ($line + 1) .'/'. count($rows) .' : '. $wk);
-            }
+        // 日本語フォント設定
+        $pdf->setFont('kozminproregular','',10);
 
-            // ＣＳＶの最初のカラムはユーザのログインIDで固定：ユーザを検索
-            $data['loginid'] = trim($value['No0']);   // 対象者ログインID
-            $user = User::where('loginid', $data['loginid']) -> first();
+        // ページ追加
+        $pdf->addPage();
 
-            // ＣＳＶに指定のユーザの存在チェック（ユーザが存在しなければエラー）
-            if (!$user) {
-                $wk = '該当社員(id: '.$data['loginid'] .')が見つかりませんでした';
-                $ret['errors'][] = ['line' => $line, 'message' => $wk];
-                $data['error'] = $wk;
-                Log::Debug(__CLASS__.':'.__FUNCTION__.' '. ($line + 1) .'/'. count($rows) .' : '. $wk);
-            }
+        // HTMLを描画、viewの指定と変数代入 - document/pdf.blade.php
+        $html = view("m31_02", $data)->render();
+        $pdf->writeHTML($html);
 
-            // ＣＳＶ行データ保存設定
-            $data['csv_id'] = $csv_payslip['id'];     // CsvPayslip id
-            $data['line'] = $line;                    // CSV行番号
-            $data['ym'] = $ym;                        // 明細年月
-            $data['data'] = $value;                   // CSV行データ
-            $data['user_id'] = $user['id'];           // 対象者内部ＩＤ
-
-            // ＣＳＶの２番目のカラムは明細のファイル名：指定があればファイル名を保存
-            if (trim($value['No1']) != '') {
-                $data['filename'] = trim($value['No1']);
-            }
-
-            // ＣＳＶ行データ保存
-            Payslip::create($data);
-
-            // ＣＳＶ行カウンタ設定　－　エラーあり？正常？
-            if (isset($data['error'])) {
-                $csv_payslip -> error ++;
-            } else {
-                $csv_payslip -> line ++;
-                $ret['insert'][] = ['line' => $line, 'message' => $user['name'] ." の明細を登録しました."];
-            }
-
-        } // １行ずつ処理
-
-        // CSV行データ読み込み結果保存（正常行数、エラー数)
-        $csv_payslip -> save();
-
-        // 結果を戻す
-        return ['import' => $ret];
+        // 出力指定 ファイル名、D(ダウンロード)
+        $pdf->output('m31.pdf', 'D');
+        return;
     }
 
-
-    private function parse_csv($file)
+    private function validate_pdf(Request $request)
     {
-        Log::Debug(__CLASS__.':'.__FUNCTION__);
+        Log::Debug(__CLASS__.':'.__FUNCTION__, $request->all());
 
-        // 拡張子チェックがうまく動かないことがあるので独自で実施
-        // -- https://api.symfony.com/3.0/Symfony/Component/HttpFoundation/File/UploadedFile.html
-        if ($file ->getClientOriginalExtension() != 'csv') {
-            Log::Debug(__CLASS__.':'.__FUNCTION__.' File Name: '. $file ->getClientOriginalName());
-            Log::Debug(__CLASS__.':'.__FUNCTION__.' File Extension: '. $file ->getClientOriginalExtension());
-            Log::Debug(__CLASS__.':'.__FUNCTION__.' ClientMimeType: '. $file ->getClientMimeType());
-            Log::Debug(__CLASS__.':'.__FUNCTION__.' MimeType: '. $file ->getMimeType());
-            return new JsonResponse(['errors' => [ 'csvfile' => 'CSVファイルを指定してください']], 422);
+        // INIT
+        $req = $request -> all();
+        $error_msg = '';
+
+        // データを取得 User（操作者）
+        $user = $request -> user();
+        if (!$user) {
+            return response() -> json(['errors' => [ 'request' => '12345  user not found']], 422);
+        }
+        Log::Debug(__CLASS__.':'.__FUNCTION__.' - user :: ', $user -> toArray());
+
+        // データを取得 CSV Payslip  --  管理者の場合は論理削除済みでも取得可能
+        if (array_key_exists('csv_id', $req)) {
+            $query = CsvPayslip::query();
+            if ($user -> can('admin')) { $query -> withTrashed(); }
+            $csv_payslip = $query -> find($req['csv_id']);
+            if (!$csv_payslip) {
+                $error_msg = '12346 [csv_id] data  not found ';
+            }
+            else Log::Debug(__CLASS__.':'.__FUNCTION__.' - csv_payslip :: ', $csv_payslip -> toArray());
+        } else {
+            $error_msg = '12347 [csv_id] not found ';
         }
 
-        // CSV をパース
-        try {
-            $rows = Csv::parse($file, true);
-        } catch (\Exception $e) {
-            Log::Debug(__CLASS__.':'.__FUNCTION__.' parse Exception : '. $e -> getMessage());
-            return new JsonResponse(['errors' => [
-                'csvfile' => 'CSVファイルの読み込みでエラーが発生しました',
-                'exception' => $e -> getMessage()
-                ]]
-            , 422);
+        // データを取得 Payslip  --  管理者の場合は論理削除済みでも取得可能
+        if (array_key_exists('id', $req)) {
+            $query = Payslip::query();
+            if ($user -> can('admin')) { $query -> withTrashed(); }
+            $payslip = $query -> find($req['id']);
+            if (!$payslip) {
+                $error_msg = '12348 [payslip id] data  not found ';
+            }
+            else Log::Debug(__CLASS__.':'.__FUNCTION__.' - payslip :: ', $payslip -> toArray());
+        } else {
+            $error_msg = '12349 [payslip id] not found ';
         }
 
-        // CSVレコード情報を戻す
-        return $rows;
+        // ここまででエラーが発生していたら処理終了
+        if ($error_msg) {
+            return response() -> json(['errors' => [ 'request' => $error_msg]], 422);
+        }
+
+        // データの関連チェック payslipのcsv_id と csv_payslip の ID が違ったら、要求エラー
+        if ($payslip -> csv_id != $csv_payslip -> id) {
+            $error_msg = '12350 [payslip.csv_id] - [csv.id] mismatch';
+            return response() -> json(['errors' => [ 'request' => $error_msg]], 422);
+        }
+        
+        // 権限確認（一般ユーザは自分の明細以外はエラー）
+        if (($user -> can('user')) && ($user -> id != $payslip -> user_id)) {
+            return response() -> json(['errors' => [ 'auth' => '12351 対象の明細を開けませんでした']], 422);
+        }
+
+        // エラーなしリターン
+        return array(
+            'head' => $csv_payslip -> header, 
+            'data' => $payslip -> data,
+            'name' => $payslip -> name,
+            'file' => $payslip -> filename,
+            'ym'   => $payslip -> ym,
+        );
     }
 
-
-    private function insertCsvPayslip($ym, $file, $value)
+    private function make_pdf_data($payslip)
     {
-        Log::Debug(__CLASS__.':'.__FUNCTION__);
+        Log::Debug(__CLASS__.':'.__FUNCTION__, $payslip);
 
-        // CsvPayslip テーブル保存準備
-        $data = array();
-        $data['ym'] = $ym;
-        $data['filename'] = $file -> getClientOriginalName();
-        $data['header'] = $value;
+        // INIT
+        mb_language('ja');
+        mb_internal_encoding("UTF-8");
 
-        // CsvPayslip テーブル保存
-        $csv_payslip = CsvPayslip::create($data);
+        // 明細情報生成
+        $ym = substr($payslip['ym'], 0, 4). '年' .substr($payslip['ym'], 4, 2) .'月度';
+        $data['ym'] = mb_convert_kana($ym, 'N'); // - 全角数字に変換
+        $data['name'] = $payslip['name'];
+        $data['filename'] = $payslip['file'];
+        $data['company'] = env('MIX_COMPANY_NAME', '環境変数 MIX_COMPANY_NAME を設定してください');
 
-        // 結果を戻す
-        return $csv_payslip;
-    }
+        // PDF埋め込み用 明細情報領域初期化
+        $data['head'] = array_fill(0, count($payslip['head']), '');
+        $data['data'] = array_fill(0, count($payslip['data']), '');
 
-
-    private function getYM($request, bool $required = true)
-    {
-        Log::Debug(__CLASS__.':'.__FUNCTION__);
-
-        // 対象年月を取得 (数字以外はすべて削除してから取得）
-        if (array_key_exists('ym', $request)) {
-            $ym = preg_replace("/\D/", "", $request['ym']);
+        // 明細項目名設定
+        $cnt = 0;
+        foreach($payslip['head'] as $v) {
+            $data['head'][++$cnt] = $v;
         }
 
-        // 対象年月が未指定ならエラー
-        else {
-            return new JsonResponse(['errors' => ['target_ym1' => '対象年月を指定してください']], 422);
-        }
-
-        // 対象年月のチェックは必須？
-        if ($required) {
-            // 対象年月は 2010～2099年01～12月であること
-            if (! preg_match('/^20([1-9]{1}[0-9]{1})(0[1-9]{1}|1[0-2]{1})$/', $ym)) {
-                return new JsonResponse(['errors' => ['target_ym2' => '対象年月は2010年01月～2099年12月で指定してください']], 422);
+        // 明細項目データ設定 - もし項目が半角ハイフンだったらヘッダーを隠す
+        $cnt = 0;
+        foreach($payslip['data'] as $v) {
+            $data['data'][++$cnt] = $v;
+            if ($v == '-') {
+                $data['head'][$cnt] = '';
+                $data['data'][$cnt] = '';
             }
         }
+        Log::Debug(__CLASS__.':'.__FUNCTION__.' - pdf data :: ', $data);
 
-        // 対象年月を戻す
-        return $ym;
+        // 生成結果を戻す
+        return $data;
     }
-
 }

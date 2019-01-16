@@ -17,7 +17,7 @@
         </v-card-text>
       
       <v-card-actions>
-        <v-btn color="gray darken-1" flat block @click.native="close">閉じる</v-btn>
+        <v-btn color="grey darken-1" flat block @click.native="close">閉じる</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

@@ -1997,11 +1997,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('CSV Download Btn created.');
+    if (true) console.log('CSV Download Btn created.');
   },
   methods: {
     csvdownload: function csvdownload(filename, url) {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("CSV Download func csvdownload");
+      if (true) console.log("CSV Download func csvdownload");
       var config = {
         responseType: 'blob',
         headers: {
@@ -2013,7 +2013,7 @@ __webpack_require__.r(__webpack_exports__);
         this.csvdownloading = false;
         this.saveCsvFile(response);
       }.bind(this)).catch(function (error) {
-        if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("CSV Download csvdownload error");
+        if (true) console.log("CSV Download csvdownload error");
         this.csvdownloading = false;
         console.log(error);
 
@@ -2050,6 +2050,359 @@ __webpack_require__.r(__webpack_exports__);
           link.setAttribute('download', filename);
           link.click();
         }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'CsvPayslipComponent',
+  components: {},
+  props: {
+    target: Object,
+    detail_id: Number
+  },
+  data: function data() {
+    return {
+      loading: false,
+      search: '',
+      pagination: {
+        sortBy: null,
+        descending: false
+      },
+      // csv list
+      csvTitle: '',
+      tabledata: [],
+      headers: [{
+        align: 'center',
+        sortable: false,
+        text: 'No'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: '年月',
+        value: 'ym'
+      }, {
+        align: 'center',
+        sortable: false,
+        text: 'アクション'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: '状態',
+        value: 'status'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: 'CSV-ID',
+        value: 'id'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: '対象者数',
+        value: 'line'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: 'エラー数',
+        value: 'error'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: 'ファイル名',
+        value: 'filename'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: '登録日時',
+        value: 'created_at'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: '公開日時',
+        value: 'published_at'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: '削除日時',
+        value: 'deleted_at'
+      }],
+      // dialog
+      dialog: false,
+      d: {
+        title: '',
+        titlecolor: '',
+        icon: '',
+        type: '',
+        item: []
+      }
+    };
+  },
+  created: function created() {
+    if (true) console.log('CsvPayslip Component created.');
+    this.initialize();
+  },
+  methods: {
+    initialize: function initialize() {},
+    reload: function reload() {
+      if (true) console.log('CsvPayslip Component reload');
+      this.getCsvPayslip();
+    },
+    initList: function initList() {
+      if (true) console.log('CsvPayslip Component initList');
+      this.setCsvTitle();
+      this.tabledata = [];
+      this.search = '';
+      this.pagination.sortBy = '';
+      this.pagination.descending = false;
+    },
+    closeList: function closeList() {
+      if (true) console.log('CsvPayslip Component closeList');
+      this.tabledata = [];
+      this.search = '';
+      this.pagination.sortBy = '';
+      this.pagination.descending = false;
+      this.$emit('closeList');
+    },
+    setCsvTitle: function setCsvTitle() {
+      if (true) console.log('CsvPayslip Component set csv title');
+      this.csvTitle = '';
+      if (this.target.ym) this.csvTitle += this.target.ym + '　';else this.csvTitle += '全期間　';
+    },
+    // 登録済みCSVのリストをサーバから取得する
+    getCsvPayslip: function getCsvPayslip() {
+      if (true) console.log('CsvPayslip Component getCsvPayslip'); // 初期化
+
+      this.initList(); // 検索パラメータ設定
+
+      var params = new URLSearchParams();
+      params.append('ym', this.target.ym ? this.target.ym : '');
+      params.append('deleted', this.target.deleted ? this.target.deleted : false); // 検索要求
+
+      this.loading = true;
+      axios.post('/api/admin/csvpayslip/index', params) // 検索結果［正常］
+      .then(function (response) {
+        this.loading = false;
+        if (true) console.log(response);
+
+        if (response.data.data) {
+          this.tabledata = response.data.data;
+          this.setStatus();
+        }
+      }.bind(this)) // 検索結果［異常］
+      .catch(function (error) {
+        this.loading = false;
+        console.log(error);
+
+        if (error.response) {
+          if ([401, 419].includes(error.response.status)) {
+            this.$emit('axios-logout');
+          } else {
+            alert('ERROR ' + error.response.status + ' ' + error.response.statusText);
+          }
+        } else {
+          alert('ERROR ' + error);
+        }
+      }.bind(this));
+    },
+    setStatus: function setStatus() {
+      if (true) console.log('CsvPayslip Component set status');
+      var wk = '不明';
+
+      for (var i = 0; i < this.tabledata.length; i++) {
+        if (this.tabledata[i].status) {
+          wk = '不明';
+
+          if (this.tabledata[i].status == 0) {
+            wk = '非公開';
+          } else if (this.tabledata[i].status == 1) {
+            wk = '公開';
+          }
+
+          if (this.tabledata[i].deleted_at != null) {
+            wk = '削除';
+          }
+
+          this.tabledata[i].status = wk;
+        }
+      }
+    },
+    dialog_open: function dialog_open(item, type) {
+      if (true) console.log('CsvPayslip Component Dialog Open');
+      this.d.type = type;
+      this.d.item = item;
+      this.d.body = 'CSV ID：' + item.id + '<br>' + '対象年月：' + item.ym + '<br>' + 'ファイル：' + item.filename + '<br><br>';
+
+      if (type == 'pub') {
+        this.d.title = '明細情報を公開します';
+        this.d.titlecolor = 'success';
+        this.d.body += '対象のデータを公開します。<br>公開後は非公開とすることはできません。';
+      } else {
+        this.d.title = '明細情報を削除します';
+        this.d.titlecolor = 'error';
+        this.d.body += '対象のデータを削除します。';
+      }
+
+      this.dialog = true;
+    },
+    dialog_yes: function dialog_yes() {
+      if (true) console.log('CsvPayslip Component Dialog YES');
+      this.dialog = false;
+      var url = '/api/admin/csvpayslip/publish';
+
+      if (this.d.type == 'del') {
+        url = '/api/admin/csvpayslip/delete';
+      }
+
+      this.csvUpdate(url, this.d.item);
+      this.d.type = '';
+      this.d.item = [];
+    },
+    dialog_no: function dialog_no() {
+      if (true) console.log('CsvPayslip Component Dialog NO');
+      this.dialog = false;
+      this.d.type = '';
+      this.d.item = [];
+    },
+    // CSVの状態を更新
+    csvUpdate: function csvUpdate(url, item) {
+      if (true) console.log('CsvPayslip Component CSV Update'); // パラメータ設定
+
+      var params = new URLSearchParams();
+      params.append('id', item.id); // 更新要求
+
+      axios.post(url, params) // 更新結果［正常］
+      .then(function (response) {
+        if (true) console.log(response);
+        this.reload();
+
+        if (this.detail_id == item.id) {
+          this.$emit('showDetail', item);
+        }
+      }.bind(this)) // 更新結果［異常］
+      .catch(function (error) {
+        console.log(error);
+
+        if (error.response) {
+          if ([401, 419].includes(error.response.status)) {
+            this.$emit('axios-logout');
+          } else {
+            alert('ERROR ' + error.response.status + ' ' + error.response.statusText);
+          }
+        } else {
+          alert('ERROR ' + error);
+        }
+      }.bind(this));
     }
   }
 });
@@ -2119,7 +2472,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   created: function created() {
-    if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('CSV Upload Btn created.');
+    if (true) console.log('CSV Upload Btn created.');
   },
   methods: {
     // アップロードボタンを押すと "<input type=file"　を実行してファイル選択ダイアログを開く
@@ -2134,7 +2487,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('CSV Upload onFilePicked');
+                if (true) console.log('CSV Upload onFilePicked');
                 files = e.target.files;
 
                 if (!(files[0] == undefined)) {
@@ -2153,7 +2506,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   break;
                 }
 
-                if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("FILE:" + files[i].name + " (" + files[i].size + " byte)");
+                if (true) console.log("FILE:" + files[i].name + " (" + files[i].size + " byte)");
                 _context.next = 9;
                 return this.csvupload(files[i]);
 
@@ -2180,7 +2533,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return new Promise(function (resolve, reject) {
-        if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('CSV Upload csv upload');
+        if (true) console.log('CSV Upload csv upload');
         var config = {
           headers: {
             'Content-Type': 'multipart/form-data'
@@ -2201,21 +2554,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         axios.post(_this.url, formData, config) // アップロード 正常
         .then(function (response) {
           this.csvuploading = false;
-          if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("CSV Upload success");
-          if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log(response.data);
+          if (true) console.log("CSV Upload success");
+          if (true) console.log(response.data);
           this.resultDialog(file, response.data.import);
         }.bind(_this)) // アップロード 異常
         .catch(function (error) {
           this.csvuploading = false;
-          if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("CSV Upload error");
-          if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log(error);
+          if (true) console.log("CSV Upload error");
+          if (true) console.log(error);
 
           if (error.response) {
             if ([401, 419].includes(error.response.status)) {
               this.$emit('axios-logout');
             } else if ([422].includes(error.response.status)) {
-              if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("CSV Upload error 422");
-              if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log(error.response.data.errors);
+              if (true) console.log("CSV Upload error 422");
+              if (true) console.log(error.response.data.errors);
 
               if (error.response.data.errors) {
                 for (var _key in error.response.data.errors) {
@@ -2326,15 +2679,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('Csv Upload Dialog created.');
+    if (true) console.log('Csv Upload Dialog created.');
   },
   methods: {
     close: function close() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("Csv Upload Dialog func close");
+      if (true) console.log("Csv Upload Dialog func close");
       this.dialog = false;
     },
     open: function open(file, data) {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("Csv Upload Dialog func open");
+      if (true) console.log("Csv Upload Dialog func open");
       this.dialog = true;
       this.filename = file.name;
       this.result = '';
@@ -2357,76 +2710,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CsvUpload_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CsvUpload.vue */ "./resources/js/components/Admin/CsvUpload.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _CsvPayslipComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CsvPayslipComponent.vue */ "./resources/js/components/Admin/CsvPayslipComponent.vue");
+/* harmony import */ var _PayslipDetailComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PayslipDetailComponent.vue */ "./resources/js/components/Admin/PayslipDetailComponent.vue");
 //
 //
 //
@@ -2540,97 +2825,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'PayslipComponent',
   components: {
-    'csv-upload': _CsvUpload_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    'csv-upload': _CsvUpload_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    'csv-payslip': _CsvPayslipComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'payslip-detail': _PayslipDetailComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {},
   data: function data() {
     return {
-      loading: false,
-      search: '',
-      pagination: {
-        sortBy: 'created_at',
-        descending: true
-      },
-      // csv list
-      tabledata: [],
-      headers: [{
-        align: 'center',
-        sortable: false,
-        text: 'No'
-      }, {
-        align: 'center',
-        sortable: true,
-        text: '年月',
-        value: 'ym'
-      }, {
-        align: 'center',
-        sortable: false,
-        text: 'アクション'
-      }, {
-        align: 'center',
-        sortable: true,
-        text: '状態',
-        value: 'status'
-      }, {
-        align: 'center',
-        sortable: true,
-        text: 'CSV-ID',
-        value: 'id'
-      }, {
-        align: 'center',
-        sortable: true,
-        text: '対象者数',
-        value: 'line'
-      }, {
-        align: 'center',
-        sortable: true,
-        text: 'エラー数',
-        value: 'error'
-      }, {
-        align: 'left',
-        sortable: true,
-        text: 'ファイル名',
-        value: 'filename'
-      }, {
-        align: 'left',
-        sortable: true,
-        text: '登録日時',
-        value: 'created_at'
-      }, {
-        align: 'left',
-        sortable: true,
-        text: '公開日時',
-        value: 'published_at'
-      }, {
-        align: 'left',
-        sortable: true,
-        text: '削除日時',
-        value: 'deleted_at'
-      }],
       menu: false,
       searchTab: true,
       csvList: false,
-      csvTitle: '',
+      detailList: false,
+      detail_id: 0,
       target: {
         ym: '',
         deleted: false
-      },
-      // dialog
-      dialog: false,
-      d: {
-        title: '',
-        titlecolor: '',
-        icon: '',
-        type: '',
-        item: []
       }
     };
   },
   created: function created() {
-    if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('Payslip Component created.');
+    if (true) console.log('Payslip Component created.');
     this.initialize();
   },
   methods: {
@@ -2639,39 +2858,291 @@ __webpack_require__.r(__webpack_exports__);
       this.target.ym = moment().format('YYYY-MM').toString();
     },
     reload: function reload() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('Payslip Component reload');
-      this.getCsvPayslip();
+      if (true) console.log('Payslip Component reload');
+      this.showList();
     },
-    initList: function initList() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('Payslip Component initList');
-      this.setCsvTitle();
-      this.tabledata = [];
+    showList: function showList() {
+      if (true) console.log('Payslip Component SHOW List');
       this.csvList = true;
+      this.$refs.csvPayslip.getCsvPayslip();
     },
     closeList: function closeList() {
-      this.tabledata = [];
+      if (true) console.log('Payslip Component CLOSE List');
       this.csvList = false;
+      this.closeDetail();
     },
-    setCsvTitle: function setCsvTitle() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('Payslip Component set csv title');
-      this.csvTitle = '';
-      if (this.target.ym) this.csvTitle += this.target.ym + '　';else this.csvTitle += '全期間　';
-    },
-    // 登録済みCSVのリストをサーバから取得する
-    getCsvPayslip: function getCsvPayslip() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('Payslip Component getCsvPayslip'); // 初期化
+    showDetail: function showDetail(item) {
+      if (true) console.log('Payslip Component SHOW Detail');
 
+      if (this.detail_id == item.id) {
+        this.closeDetail();
+      } else {
+        this.detailList = true;
+        this.detail_id = item.id;
+        this.$refs.detailPayslip.getPayslipDetail(item);
+      }
+    },
+    closeDetail: function closeDetail() {
+      if (true) console.log('Payslip Component CLOSE Detail');
+      this.detailList = false;
+      this.detail_id = 0;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'PayslipDetailComponent',
+  components: {},
+  props: {
+    target: Object
+  },
+  data: function data() {
+    return {
+      loading: false,
+      search: '',
+      pagination: {
+        sortBy: '',
+        descending: false
+      },
+      // detail list
+      title: '',
+      csv_item: {},
+      tabledata: [],
+      headers: [{
+        align: 'center',
+        sortable: false,
+        text: 'No'
+      }, {
+        align: 'center',
+        sortable: false,
+        text: 'アクション'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: 'CSV行',
+        value: 'line'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: '氏名',
+        value: 'name'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: 'ログインID',
+        value: 'loginid'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: 'DL回数',
+        value: 'download'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: 'ファイル名',
+        value: 'filename'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: 'CSVエラー',
+        value: 'error'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: '削除日時',
+        value: 'deleted_at'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: '削除者ID',
+        value: 'delete_user_id'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: 'CSV-ID',
+        value: 'csv_id'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: '状態',
+        value: 'status'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: '年月',
+        value: 'ym'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: 'ユーザID',
+        value: 'user_id'
+      }],
+      // dialog
+      dialog: false,
+      d: {
+        title: '',
+        titlecolor: '',
+        icon: '',
+        item: []
+      }
+    };
+  },
+  created: function created() {
+    if (true) console.log('PayslipDetail Component created.');
+    this.initialize();
+  },
+  methods: {
+    initialize: function initialize() {},
+    reload: function reload() {
+      if (true) console.log('PayslipDetail Component reload');
+      this.getPayslipDetail();
+    },
+    initList: function initList() {
+      if (true) console.log('PayslipDetail Component initList');
+      this.setTitle();
+      this.tabledata = [];
+      this.search = '';
+      this.pagination.sortBy = '';
+      this.pagination.descending = false;
+    },
+    closeDetail: function closeDetail() {
+      if (true) console.log('PayslipDetail Component closeDetail');
+      this.tabledata = [];
+      this.search = '';
+      this.pagination.sortBy = '';
+      this.pagination.descending = false;
+      this.$emit('closeDetail');
+    },
+    setTitle: function setTitle() {
+      if (true) console.log('PayslipDetail Component set title');
+      this.title = '';
+      this.title = 'ID: ' + this.csv_item.id + '  - ' + this.csv_item.ym;
+
+      if (this.csv_item.deleted_at != null) {
+        this.title += ' - 削除済';
+      } else if (this.csv_item.published_at != null) {
+        this.title += ' - 公開済';
+      } else {
+        this.title += ' - 未公開';
+      }
+    },
+    // 指定の明細リストサーバから取得する
+    getPayslipDetail: function getPayslipDetail(item) {
+      if (true) console.log('PayslipDetail Component getPaslipDetail'); // 初期化
+
+      this.csv_item = item ? item : this.csv_item;
       this.initList(); // 検索パラメータ設定
 
       var params = new URLSearchParams();
-      params.append('ym', this.target.ym ? this.target.ym : '');
-      params.append('deleted', this.target.deleted); // 検索要求
+      params.append('id', this.csv_item.id); // 検索要求
 
       this.loading = true;
-      axios.post('/api/admin/payslip/csvlist', params) // 検索結果［正常］
+      axios.post('/api/admin/payslip/index', params) // 検索結果［正常］
       .then(function (response) {
         this.loading = false;
-        if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log(response);
+        if (true) console.log(response);
 
         if (response.data.data) {
           this.tabledata = response.data.data;
@@ -2694,6 +3165,7 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     setStatus: function setStatus() {
+      if (true) console.log('PayslipDetail Component set status');
       var wk = '不明';
 
       for (var i = 0; i < this.tabledata.length; i++) {
@@ -2701,9 +3173,9 @@ __webpack_require__.r(__webpack_exports__);
           wk = '不明';
 
           if (this.tabledata[i].status == 0) {
-            wk = '非公開';
-          } else if (this.tabledata[i].status == 1) {
-            wk = '公開';
+            wk = '有効';
+          } else if (this.tabledata[i].status == 9) {
+            wk = '削除';
           }
 
           if (this.tabledata[i].deleted_at != null) {
@@ -2714,61 +3186,146 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
-    dialog_open: function dialog_open(item, type) {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('Payslip Component Dialog Open');
-      this.d.type = type;
+    dialog_open: function dialog_open(item) {
+      if (true) console.log('PayslipDetail Component Dialog Open');
       this.d.item = item;
-      this.d.body = 'CSV ID：' + item.id + '<br>' + '対象年月：' + item.ym + '<br>' + 'ファイル：' + item.filename + '<br><br>';
+      this.d.body = 'CSV行：' + item.line + '<br>' + '対象年月：' + item.ym + '<br>' + '対象者：' + item.name + '<br>' + 'ログインID：' + item.loginid + '<br>' + 'ダウンロード回数：' + item.download + ' 回<br>' + '<br>';
+      this.d.title = '明細情報を削除します';
+      this.d.titlecolor = 'error';
+      this.d.body += '対象のデータを削除します。';
 
-      if (type == 'pub') {
-        this.d.title = '明細情報を公開します';
-        this.d.titlecolor = 'success';
-        this.d.body += '対象のデータを公開します。<br>公開後は非公開とすることはできません。';
-      } else {
-        this.d.title = '明細情報を削除します';
-        this.d.titlecolor = 'error';
-        this.d.body += '対象のデータを削除します。';
+      if (item.download > 0) {
+        this.d.body += '<br> 利用者は明細をダウンロードしたことがあるようです。';
       }
 
       this.dialog = true;
     },
     dialog_yes: function dialog_yes() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('Payslip Component Dialog YES');
+      if (true) console.log('PayslipDetail Component Dialog YES');
       this.dialog = false;
-      var url = '/api/admin/payslip/publish';
-
-      if (this.d.type == 'del') {
-        url = '/api/admin/payslip/delete';
-      }
-
-      this.csvUpdate(url, this.d.item.id);
-      this.d.type = '';
+      var url = '/api/admin/payslip/delete';
+      this.detailUpdate(url, this.d.item.id);
       this.d.item = [];
     },
     dialog_no: function dialog_no() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('Payslip Component Dialog NO');
+      if (true) console.log('PayslipDetail Component Dialog NO');
       this.dialog = false;
-      this.d.type = '';
       this.d.item = [];
     },
-    // CSVの更新
-    csvUpdate: function csvUpdate(url, id) {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('Payslip Component CSV Update'); // パラメータ設定
+    // 明細の状態を更新
+    detailUpdate: function detailUpdate(url, id) {
+      if (true) console.log('PayslipDetail Component Detail Update'); // パラメータ設定
 
       var params = new URLSearchParams();
       params.append('id', id); // 更新要求
 
-      axios.post(url, params) // 検索結果［正常］
+      axios.post(url, params) // 更新結果［正常］
       .then(function (response) {
-        if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log(response);
+        if (true) console.log(response);
         this.reload();
-      }.bind(this)) // 検索結果［異常］
+      }.bind(this)) // 更新結果［異常］
       .catch(function (error) {
         console.log(error);
 
         if (error.response) {
           if ([401, 419].includes(error.response.status)) {
             this.$emit('axios-logout');
+          } else {
+            alert('ERROR ' + error.response.status + ' ' + error.response.statusText);
+          }
+        } else {
+          alert('ERROR ' + error);
+        }
+      }.bind(this));
+    },
+    pdf_download: function pdf_download(item) {
+      if (true) console.log('PayslipDetail Component PDF Download'); // パラメータ設定
+
+      var params = new URLSearchParams();
+      params.append('loginid', item.loginid); // 操作ログ記録用
+
+      params.append('name', item.name); // 操作ログ記録用
+
+      params.append('yyyymm', item.ym); // 操作ログ記録用
+
+      params.append('csv_id', item.csv_id);
+      params.append('id', item.id);
+      var config = {
+        responseType: 'blob' // ダウンロード要求
+
+      };
+      this.loading = true;
+      axios.post('/api/admin/payslip/pdf', params, config) // 正常
+      .then(function (response) {
+        this.loading = false;
+
+        if (response.data) {
+          // PDFデータ取得
+          var blob = new Blob([response.data], {
+            "type": "application/pdf"
+          }); // 補助ファイル名設定
+
+          var f = '';
+
+          if (item.filename != null) {
+            f = '(' + item.filename + ')';
+          } // ファイル名設定 - '給与明細'_'年月'_'氏名''(補助ファイル名)'_'出力日時'.pdf 
+          // 　　　　　　　 - 氏名からは「全角空白」、「半角空白」、「スラッシュ」を削除しとく
+
+
+          var filename = '給与明細';
+          filename += '_' + item.ym;
+          filename += '_' + item.name.replace(/　/g, '').replace(/ /g, '').replace(/\//g, '');
+          filename += f;
+          filename += '_' + moment(Date.now()).format("YYYYMMDD_HHmmss");
+          filename += '.pdf'; // ＰＤＦダウンロード（表示）　IE11
+
+          if (window.navigator.msSaveBlob) {
+            window.navigator.msSaveBlob(blob, filename);
+            window.navigator.msSaveOrOpenBlob(blob, filename);
+          } // ＰＤＦダウンロード　Chrome, Safari, Firefox, etc...
+          else {
+              var url = window.URL.createObjectURL(blob);
+              var link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', filename);
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+            }
+        } else {
+          alert('PDF ダウンロードエラー');
+        }
+      }.bind(this)) // ダウンロード失敗
+      .catch(function (error) {
+        this.loading = false;
+        console.log(error);
+
+        if (error.response) {
+          if ([401, 419].includes(error.response.status)) {
+            this.$emit('axios-logout');
+          } else if ([422].includes(error.response.status)) {
+            if (true) console.log("PDF Download error 422");
+            if (true) console.log(error.response.data); // error message blog to json - 通信時に BLOB 指定しているのでエラーメッセージもBLOB.. JSONに戻して取り扱い
+            //                                     - responseType: 'blob'
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              // 非同期処理のため
+              var data = JSON.parse(reader.result);
+              if (true) console.log(data);
+
+              if (data.errors) {
+                for (var key in data.errors) {
+                  if (data.errors[key]) {
+                    alert(key + ' : ' + data.errors[key]);
+                  }
+                }
+              }
+            };
+
+            reader.readAsText(error.response.data, "UTF-8");
           } else {
             alert('ERROR ' + error.response.status + ' ' + error.response.statusText);
           }
@@ -2897,7 +3454,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('User Component created.');
+    if (true) console.log('User Component created.');
     this.initialize();
   },
   methods: {
@@ -2905,19 +3462,19 @@ __webpack_require__.r(__webpack_exports__);
       this.getUsers();
     },
     reload: function reload() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('User Component reload');
+      if (true) console.log('User Component reload');
       this.getUsers();
     },
     setsearch: function setsearch(id) {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('User Component set Search');
+      if (true) console.log('User Component set Search');
       this.search = id;
     },
     getUsers: function getUsers() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('User Component getUsers');
+      if (true) console.log('User Component getUsers');
       this.loading = true;
       axios.post('/api/admin/user').then(function (response) {
         this.loading = false;
-        if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log(response);
+        if (true) console.log(response);
 
         if (response.data.users) {
           this.tabledata = response.data.users;
@@ -2946,7 +3503,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     dialogOpen: function dialogOpen(item, flg) {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('User Component dialog open');
+      if (true) console.log('User Component dialog open');
       this.$refs.userDialog.open(item, flg || false);
     }
   }
@@ -3047,7 +3604,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log('User Dialog created.');
+    if (true) console.log('User Dialog created.');
   },
   methods: {
     clearVar: function clearVar() {
@@ -3065,11 +3622,11 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     close: function close() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("User Dialog func close");
+      if (true) console.log("User Dialog func close");
       this.dialog = false;
     },
     save: function save() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("User Dialog func save"); // 変更があった時だけ通信
+      if (true) console.log("User Dialog func save"); // 変更があった時だけ通信
 
       if (JSON.stringify(this.orig).replace(/[\s|　]+/g, '') !== JSON.stringify(this.items).replace(/[\s|　]+/g, '')) {
         this.store();
@@ -3079,7 +3636,7 @@ __webpack_require__.r(__webpack_exports__);
         }
     },
     open: function open(item, flg) {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("User Dialog func open"); // INIT VAR
+      if (true) console.log("User Dialog func open"); // INIT VAR
 
       this.clearVar(); // SET TYPE
 
@@ -3121,7 +3678,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     store: function store() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("User Dialog func store");
+      if (true) console.log("User Dialog func store");
       var params = new URLSearchParams();
       params.append('loginid', this.items.loginid);
       params.append('name', this.items.name);
@@ -3134,7 +3691,7 @@ __webpack_require__.r(__webpack_exports__);
         alert(this.items.name + "を保存しました");
         this.close(); // 保存が正常終了したら閉じる
       }.bind(this)).catch(function (error) {
-        if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("User Dialog store error");
+        if (true) console.log("User Dialog store error");
         console.log(error);
 
         if (error.response && [401, 419].includes(error.response.status)) {
@@ -3161,7 +3718,7 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     destroy: function destroy() {
-      if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("User Dialog func destroy");
+      if (true) console.log("User Dialog func destroy");
       var params = new URLSearchParams();
       params.append('loginid', this.items.loginid);
       axios.post('/api/admin/user/destroy', params).then(function (response) {
@@ -3169,7 +3726,7 @@ __webpack_require__.r(__webpack_exports__);
         alert(this.items.name + "\n" + "を削除しました");
         this.close(); // 保存が正常終了したら閉じる
       }.bind(this)).catch(function (error) {
-        if (Object({"NODE_ENV":"development"}).MIX_DEBUG) console.log("User Dialog destroy error");
+        if (true) console.log("User Dialog destroy error");
         console.log(error);
 
         if (error.response && [401, 419].includes(error.response.status)) {
@@ -3253,12 +3810,12 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     console.log('AdminComponent mounted.');
 
-    if (Object({"NODE_ENV":"development"}).MIX_FOOTER) {
-      this.footer = Object({"NODE_ENV":"development"}).MIX_FOOTER;
+    if (true) {
+      this.footer = "Copyright &#169; Alphabet Inc. All Rights Reserved.";
     }
 
-    if (Object({"NODE_ENV":"development"}).MIX_TITLE) {
-      this.title = Object({"NODE_ENV":"development"}).MIX_TITLE;
+    if (true) {
+      this.title = "Alphabet Inc.";
     }
   },
   methods: {
@@ -57224,6 +57781,439 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=template&id=05f399e0&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=template&id=05f399e0& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-flex",
+    [
+      _c(
+        "v-card",
+        { staticClass: "m-3 px-3", attrs: { xs12: "" } },
+        [
+          _c(
+            "v-card-title",
+            { staticClass: "title" },
+            [
+              _c(
+                "v-icon",
+                { staticClass: "pr-2", on: { click: _vm.closeList } },
+                [_vm._v(_vm._s(_vm.$route.meta.icon))]
+              ),
+              _vm._v(
+                " " +
+                  _vm._s(_vm.csvTitle) +
+                  " " +
+                  _vm._s(/* 給与明細ＣＳＶ検索 */) +
+                  "\n      "
+              ),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  "prepend-icon": "search",
+                  label: "絞り込み表示",
+                  "single-line": "",
+                  "hide-details": "",
+                  clearable: ""
+                },
+                model: {
+                  value: _vm.search,
+                  callback: function($$v) {
+                    _vm.search = $$v
+                  },
+                  expression: "search"
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "v-icon",
+                {
+                  staticClass: "accent ml-5",
+                  attrs: { dark: "" },
+                  on: { click: _vm.closeList }
+                },
+                [_vm._v("close")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-data-table",
+            {
+              staticClass: "elevation-0 p-1",
+              attrs: {
+                headers: _vm.headers,
+                items: _vm.tabledata,
+                pagination: _vm.pagination,
+                "rows-per-page-items": [5, 10, 20, { text: "All", value: -1 }],
+                loading: _vm.loading,
+                search: _vm.search
+              },
+              on: {
+                "update:pagination": function($event) {
+                  _vm.pagination = $event
+                }
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "items",
+                  fn: function(props) {
+                    return [
+                      _c(
+                        "tr",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value:
+                                props.item.id == _vm.detail_id ||
+                                _vm.detail_id == 0,
+                              expression:
+                                "props.item.id == detail_id || detail_id == 0"
+                            }
+                          ],
+                          class: { "pink--text": props.item.deleted_at != null }
+                        },
+                        [
+                          _c(
+                            "td",
+                            {
+                              staticClass: "text-xs-center",
+                              attrs: { xs1: "" }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  props.index +
+                                    1 +
+                                    (_vm.pagination.page - 1) *
+                                      _vm.pagination.rowsPerPage
+                                )
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.headers.length - 1, function(n) {
+                            return [
+                              _vm.headers[n].text != "アクション"
+                                ? _c("td", {
+                                    class: "text-xs-" + _vm.headers[n].align,
+                                    staticStyle: { "white-space": "nowrap" },
+                                    domProps: {
+                                      textContent: _vm._s(
+                                        props.item[_vm.headers[n].value]
+                                      )
+                                    }
+                                  })
+                                : _c(
+                                    "td",
+                                    {
+                                      class: "text-xs-" + _vm.headers[n].align,
+                                      staticStyle: { "white-space": "nowrap" }
+                                    },
+                                    [
+                                      _c(
+                                        "v-tooltip",
+                                        {
+                                          attrs: {
+                                            right: "",
+                                            color:
+                                              props.item.deleted_at == null
+                                                ? "primary"
+                                                : "grey"
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              attrs: {
+                                                slot: "activator",
+                                                fab: "",
+                                                small: "",
+                                                flat: ""
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.$emit(
+                                                    "showDetail",
+                                                    props.item
+                                                  )
+                                                }
+                                              },
+                                              slot: "activator"
+                                            },
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                { attrs: { color: "primary" } },
+                                                [_vm._v("list")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("span", [_vm._v("明細一覧")])
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      props.item.published_at == null
+                                        ? _c(
+                                            "v-tooltip",
+                                            {
+                                              attrs: {
+                                                right: "",
+                                                color:
+                                                  props.item.deleted_at == null
+                                                    ? "success"
+                                                    : "grey"
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-btn",
+                                                {
+                                                  attrs: {
+                                                    slot: "activator",
+                                                    fab: "",
+                                                    small: "",
+                                                    flat: "",
+                                                    disabled:
+                                                      props.item.deleted_at !=
+                                                      null
+                                                  },
+                                                  on: {
+                                                    click: function($event) {
+                                                      _vm.dialog_open(
+                                                        props.item,
+                                                        "pub"
+                                                      )
+                                                    }
+                                                  },
+                                                  slot: "activator"
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-icon",
+                                                    {
+                                                      attrs: {
+                                                        color: "success"
+                                                      }
+                                                    },
+                                                    [_vm._v("lock")]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c("span", [_vm._v("公開")])
+                                            ],
+                                            1
+                                          )
+                                        : _c(
+                                            "v-btn",
+                                            {
+                                              attrs: {
+                                                fab: "",
+                                                small: "",
+                                                flat: "",
+                                                disabled: ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                {
+                                                  attrs: {
+                                                    color: "grey lighten-1"
+                                                  }
+                                                },
+                                                [_vm._v("lock_open")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-tooltip",
+                                        {
+                                          attrs: {
+                                            right: "",
+                                            color:
+                                              props.item.deleted_at == null
+                                                ? "error"
+                                                : "grey"
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              attrs: {
+                                                slot: "activator",
+                                                fab: "",
+                                                small: "",
+                                                flat: "",
+                                                disabled:
+                                                  props.item.deleted_at != null
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.dialog_open(
+                                                    props.item,
+                                                    "del"
+                                                  )
+                                                }
+                                              },
+                                              slot: "activator"
+                                            },
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                { attrs: { color: "error" } },
+                                                [_vm._v("delete")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("span", [
+                                            _vm._v(
+                                              _vm._s(
+                                                props.item.deleted_at == null
+                                                  ? "削除"
+                                                  : "削除済"
+                                              )
+                                            )
+                                          ])
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                            ]
+                          })
+                        ],
+                        2
+                      )
+                    ]
+                  }
+                }
+              ])
+            },
+            [
+              _c("v-progress-linear", {
+                attrs: { slot: "progress", color: "blue", indeterminate: "" },
+                slot: "progress"
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { width: "500", persistent: "" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c(
+                "v-toolbar",
+                { attrs: { color: _vm.d.titlecolor, dark: "" } },
+                [_c("v-toolbar-title", [_vm._v(_vm._s(_vm.d.title))])],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-card-text", { staticClass: "subheading" }, [
+                _c("span", { domProps: { innerHTML: _vm._s(_vm.d.body) } }),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v("よろしいですか？\n      ")
+              ]),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { flat: "", block: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog_no()
+                        }
+                      }
+                    },
+                    [_vm._v(" いいえ ")]
+                  ),
+                  _vm._v(" "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { flat: "", block: "", color: _vm.d.titlecolor },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog_yes()
+                        }
+                      }
+                    },
+                    [_vm._v(" はい ")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/CsvUpload.vue?vue&type=template&id=41fe01ac&":
 /*!******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/CsvUpload.vue?vue&type=template&id=41fe01ac& ***!
@@ -57406,7 +58396,7 @@ var render = function() {
                   _c(
                     "v-btn",
                     {
-                      attrs: { color: "gray darken-1", flat: "", block: "" },
+                      attrs: { color: "grey darken-1", flat: "", block: "" },
                       nativeOn: {
                         click: function($event) {
                           return _vm.close($event)
@@ -57493,7 +58483,7 @@ var render = function() {
                     block: "",
                     depressed: "",
                     outline: _vm.searchTab,
-                    color: _vm.searchTab ? "primary" : "blue-gray"
+                    color: _vm.searchTab ? "primary" : "blue-grey lighten-5"
                   },
                   on: {
                     click: function($event) {
@@ -57515,7 +58505,7 @@ var render = function() {
                     block: "",
                     depressed: "",
                     outline: !_vm.searchTab,
-                    color: !_vm.searchTab ? "primary" : "blue-gray"
+                    color: !_vm.searchTab ? "primary" : "blue-grey lighten-5"
                   },
                   on: {
                     click: function($event) {
@@ -57697,7 +58687,7 @@ var render = function() {
                   updata: _vm.target,
                   color: "primary",
                   icon: "cloud_upload",
-                  url: "/api/admin/payslip/upload"
+                  url: "/api/admin/csvpayslip/upload"
                 },
                 on: {
                   reload: _vm.reload,
@@ -57719,7 +58709,11 @@ var render = function() {
                     }
                   ],
                   attrs: { block: "", flat: "", color: "primary" },
-                  on: { click: _vm.getCsvPayslip }
+                  on: {
+                    click: function($event) {
+                      _vm.showList()
+                    }
+                  }
                 },
                 [
                   _c("v-icon", { staticClass: "pr-2" }, [_vm._v("search")]),
@@ -57734,307 +58728,329 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _vm.csvList
-        ? _c(
-            "v-card",
-            { staticClass: "m-3 px-3", attrs: { xs12: "" } },
+      _c("csv-payslip", {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.csvList,
+            expression: "csvList"
+          }
+        ],
+        ref: "csvPayslip",
+        attrs: { target: _vm.target, detail_id: _vm.detail_id },
+        on: {
+          "axios-logout": function($event) {
+            _vm.$emit("axios-logout")
+          },
+          closeList: _vm.closeList,
+          showDetail: _vm.showDetail
+        }
+      }),
+      _vm._v(" "),
+      _c("payslip-detail", {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.detailList,
+            expression: "detailList"
+          }
+        ],
+        ref: "detailPayslip",
+        attrs: { target: _vm.target },
+        on: {
+          "axios-logout": function($event) {
+            _vm.$emit("axios-logout")
+          },
+          closeDetail: function($event) {
+            _vm.closeDetail()
+          }
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=template&id=94d8b922&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=template&id=94d8b922& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-flex",
+    [
+      _c(
+        "v-card",
+        { staticClass: "m-3 px-3", attrs: { xs12: "" } },
+        [
+          _c(
+            "v-card-title",
+            { staticClass: "title" },
             [
               _c(
-                "v-card-title",
-                { staticClass: "title" },
-                [
-                  _c(
-                    "v-icon",
-                    { staticClass: "pr-2", on: { click: _vm.closeList } },
-                    [_vm._v(_vm._s(_vm.$route.meta.icon))]
-                  ),
-                  _vm._v(
-                    " " +
-                      _vm._s(_vm.csvTitle) +
-                      " " +
-                      _vm._s(/* 給与明細ＣＳＶ検索 */) +
-                      "\n      "
-                  ),
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      "prepend-icon": "search",
-                      label: "絞り込み表示",
-                      "single-line": "",
-                      "hide-details": "",
-                      clearable: ""
-                    },
-                    model: {
-                      value: _vm.search,
-                      callback: function($$v) {
-                        _vm.search = $$v
-                      },
-                      expression: "search"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "v-icon",
-                    {
-                      staticClass: "accent ml-5",
-                      attrs: { dark: "" },
-                      on: { click: _vm.closeList }
-                    },
-                    [_vm._v("close")]
-                  )
-                ],
-                1
+                "v-icon",
+                { staticClass: "pr-2", on: { click: _vm.closeDetail } },
+                [_vm._v(_vm._s(_vm.$route.meta.icon))]
               ),
+              _vm._v(
+                " " +
+                  _vm._s(_vm.title) +
+                  " " +
+                  _vm._s(/* 給与明細詳細検索 */) +
+                  "\n      "
+              ),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  "prepend-icon": "search",
+                  label: "絞り込み表示",
+                  "single-line": "",
+                  "hide-details": "",
+                  clearable: ""
+                },
+                model: {
+                  value: _vm.search,
+                  callback: function($$v) {
+                    _vm.search = $$v
+                  },
+                  expression: "search"
+                }
+              }),
               _vm._v(" "),
               _c(
-                "v-data-table",
+                "v-icon",
                 {
-                  staticClass: "elevation-0 p-1",
-                  attrs: {
-                    headers: _vm.headers,
-                    items: _vm.tabledata,
-                    pagination: _vm.pagination,
-                    "rows-per-page-items": [
-                      5,
-                      10,
-                      20,
-                      { text: "All", value: -1 }
-                    ],
-                    loading: _vm.loading,
-                    search: _vm.search
-                  },
-                  on: {
-                    "update:pagination": function($event) {
-                      _vm.pagination = $event
-                    }
-                  },
-                  scopedSlots: _vm._u([
-                    {
-                      key: "items",
-                      fn: function(props) {
-                        return [
-                          _c(
-                            "tr",
-                            {
-                              class: {
-                                "pink--text": props.item.deleted_at != null
-                              }
-                            },
-                            [
-                              _c(
-                                "td",
-                                {
-                                  staticClass: "text-xs-center",
-                                  attrs: { xs1: "" }
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(
-                                      props.index +
-                                        1 +
-                                        (_vm.pagination.page - 1) *
-                                          _vm.pagination.rowsPerPage
-                                    )
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _vm._l(_vm.headers.length - 1, function(n) {
-                                return [
-                                  _vm.headers[n].text != "アクション"
-                                    ? _c("td", {
-                                        class:
-                                          "text-xs-" + _vm.headers[n].align,
-                                        staticStyle: {
-                                          "white-space": "nowrap"
-                                        },
-                                        domProps: {
-                                          textContent: _vm._s(
-                                            props.item[_vm.headers[n].value]
-                                          )
-                                        }
-                                      })
-                                    : _c(
-                                        "td",
-                                        {
-                                          class:
-                                            "text-xs-" + _vm.headers[n].align,
-                                          staticStyle: {
-                                            "white-space": "nowrap"
-                                          }
-                                        },
-                                        [
-                                          props.item.published_at == null
-                                            ? _c(
-                                                "v-tooltip",
-                                                {
-                                                  attrs: {
-                                                    right: "",
-                                                    color:
-                                                      props.item.deleted_at ==
-                                                      null
-                                                        ? "success"
-                                                        : "gray"
-                                                  }
-                                                },
-                                                [
-                                                  _c(
-                                                    "v-btn",
-                                                    {
-                                                      attrs: {
-                                                        slot: "activator",
-                                                        fab: "",
-                                                        small: "",
-                                                        flat: "",
-                                                        disabled:
-                                                          props.item
-                                                            .deleted_at != null
-                                                      },
-                                                      on: {
-                                                        click: function(
-                                                          $event
-                                                        ) {
-                                                          _vm.dialog_open(
-                                                            props.item,
-                                                            "pub"
-                                                          )
-                                                        }
-                                                      },
-                                                      slot: "activator"
-                                                    },
-                                                    [
-                                                      _c(
-                                                        "v-icon",
-                                                        {
-                                                          attrs: {
-                                                            color: "success"
-                                                          }
-                                                        },
-                                                        [_vm._v("lock")]
-                                                      )
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c("span", [_vm._v("公開")])
-                                                ],
-                                                1
-                                              )
-                                            : _c(
-                                                "v-btn",
-                                                {
-                                                  attrs: {
-                                                    fab: "",
-                                                    small: "",
-                                                    flat: "",
-                                                    disabled: ""
-                                                  }
-                                                },
-                                                [
-                                                  _c(
-                                                    "v-icon",
-                                                    {
-                                                      attrs: {
-                                                        color: "grey lighten-1"
-                                                      }
-                                                    },
-                                                    [_vm._v("lock_open")]
-                                                  )
-                                                ],
-                                                1
-                                              ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-tooltip",
-                                            {
-                                              attrs: {
-                                                right: "",
-                                                color:
-                                                  props.item.deleted_at == null
-                                                    ? "error"
-                                                    : "gray"
-                                              }
-                                            },
-                                            [
-                                              _c(
-                                                "v-btn",
-                                                {
-                                                  attrs: {
-                                                    slot: "activator",
-                                                    fab: "",
-                                                    small: "",
-                                                    flat: "",
-                                                    disabled:
-                                                      props.item.deleted_at !=
-                                                      null
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      _vm.dialog_open(
-                                                        props.item,
-                                                        "del"
-                                                      )
-                                                    }
-                                                  },
-                                                  slot: "activator"
-                                                },
-                                                [
-                                                  _c(
-                                                    "v-icon",
-                                                    {
-                                                      attrs: { color: "error" }
-                                                    },
-                                                    [_vm._v("delete")]
-                                                  )
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c("span", [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    props.item.deleted_at ==
-                                                    null
-                                                      ? "削除"
-                                                      : "削除済"
-                                                  )
-                                                )
-                                              ])
-                                            ],
-                                            1
-                                          )
-                                        ],
-                                        1
-                                      )
-                                ]
-                              })
-                            ],
-                            2
-                          )
-                        ]
-                      }
-                    }
-                  ])
+                  staticClass: "accent ml-5",
+                  attrs: { dark: "" },
+                  on: { click: _vm.closeDetail }
                 },
-                [
-                  _c("v-progress-linear", {
-                    attrs: {
-                      slot: "progress",
-                      color: "blue",
-                      indeterminate: ""
-                    },
-                    slot: "progress"
-                  })
-                ],
-                1
+                [_vm._v("close")]
               )
             ],
             1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-data-table",
+            {
+              staticClass: "elevation-0 p-1",
+              attrs: {
+                headers: _vm.headers,
+                items: _vm.tabledata,
+                pagination: _vm.pagination,
+                "rows-per-page-items": [10, 25, 50, { text: "All", value: -1 }],
+                loading: _vm.loading,
+                search: _vm.search
+              },
+              on: {
+                "update:pagination": function($event) {
+                  _vm.pagination = $event
+                }
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "items",
+                  fn: function(props) {
+                    return [
+                      _c(
+                        "tr",
+                        {
+                          class: { "pink--text": props.item.deleted_at != null }
+                        },
+                        [
+                          _c(
+                            "td",
+                            {
+                              staticClass: "text-xs-center",
+                              attrs: { xs1: "" }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  props.index +
+                                    1 +
+                                    (_vm.pagination.page - 1) *
+                                      _vm.pagination.rowsPerPage
+                                )
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.headers.length - 1, function(n) {
+                            return [
+                              _vm.headers[n].text != "アクション"
+                                ? _c("td", {
+                                    class: "text-xs-" + _vm.headers[n].align,
+                                    staticStyle: { "white-space": "nowrap" },
+                                    domProps: {
+                                      textContent: _vm._s(
+                                        props.item[_vm.headers[n].value]
+                                      )
+                                    }
+                                  })
+                                : _c(
+                                    "td",
+                                    {
+                                      class: "text-xs-" + _vm.headers[n].align,
+                                      staticStyle: { "white-space": "nowrap" }
+                                    },
+                                    [
+                                      _c(
+                                        "v-tooltip",
+                                        {
+                                          attrs: {
+                                            right: "",
+                                            color:
+                                              _vm.csv_item.published_at != null
+                                                ? "success"
+                                                : "grey"
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              attrs: {
+                                                slot: "activator",
+                                                fab: "",
+                                                small: "",
+                                                flat: "",
+                                                disabled:
+                                                  props.item.error != null
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.pdf_download(props.item)
+                                                }
+                                              },
+                                              slot: "activator"
+                                            },
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                {
+                                                  attrs: {
+                                                    color:
+                                                      _vm.csv_item
+                                                        .published_at != null
+                                                        ? "success"
+                                                        : "grey"
+                                                  }
+                                                },
+                                                [_vm._v("description")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("span", [_vm._v("明細PDF")])
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-tooltip",
+                                        {
+                                          attrs: {
+                                            right: "",
+                                            color:
+                                              props.item.deleted_at == null
+                                                ? "error"
+                                                : "grey"
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              attrs: {
+                                                slot: "activator",
+                                                fab: "",
+                                                small: "",
+                                                flat: "",
+                                                disabled:
+                                                  props.item.deleted_at !=
+                                                    null ||
+                                                  _vm.csv_item.deleted_at !=
+                                                    null
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.dialog_open(
+                                                    props.item,
+                                                    "del"
+                                                  )
+                                                }
+                                              },
+                                              slot: "activator"
+                                            },
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                { attrs: { color: "error" } },
+                                                [_vm._v("delete")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("span", [
+                                            _vm._v(
+                                              _vm._s(
+                                                props.item.deleted_at == null
+                                                  ? "削除"
+                                                  : "削除済"
+                                              )
+                                            )
+                                          ])
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                            ]
+                          })
+                        ],
+                        2
+                      )
+                    ]
+                  }
+                }
+              ])
+            },
+            [
+              _c("v-progress-linear", {
+                attrs: { slot: "progress", color: "blue", indeterminate: "" },
+                slot: "progress"
+              })
+            ],
+            1
           )
-        : _vm._e(),
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "v-dialog",
@@ -58539,7 +59555,7 @@ var render = function() {
                   _c(
                     "v-btn",
                     {
-                      attrs: { color: "gray    darken-1", flat: "", block: "" },
+                      attrs: { color: "grey    darken-1", flat: "", block: "" },
                       nativeOn: {
                         click: function($event) {
                           return _vm.close($event)
@@ -97189,6 +98205,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Admin/CsvPayslipComponent.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/Admin/CsvPayslipComponent.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CsvPayslipComponent_vue_vue_type_template_id_05f399e0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CsvPayslipComponent.vue?vue&type=template&id=05f399e0& */ "./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=template&id=05f399e0&");
+/* harmony import */ var _CsvPayslipComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CsvPayslipComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CsvPayslipComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CsvPayslipComponent_vue_vue_type_template_id_05f399e0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CsvPayslipComponent_vue_vue_type_template_id_05f399e0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Admin/CsvPayslipComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CsvPayslipComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CsvPayslipComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CsvPayslipComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=template&id=05f399e0&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=template&id=05f399e0& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CsvPayslipComponent_vue_vue_type_template_id_05f399e0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CsvPayslipComponent.vue?vue&type=template&id=05f399e0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/CsvPayslipComponent.vue?vue&type=template&id=05f399e0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CsvPayslipComponent_vue_vue_type_template_id_05f399e0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CsvPayslipComponent_vue_vue_type_template_id_05f399e0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Admin/CsvUpload.vue":
 /*!*****************************************************!*\
   !*** ./resources/js/components/Admin/CsvUpload.vue ***!
@@ -97391,6 +98476,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PayslipComponent_vue_vue_type_template_id_47c23c80___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PayslipComponent_vue_vue_type_template_id_47c23c80___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/PayslipDetailComponent.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/Admin/PayslipDetailComponent.vue ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PayslipDetailComponent_vue_vue_type_template_id_94d8b922___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PayslipDetailComponent.vue?vue&type=template&id=94d8b922& */ "./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=template&id=94d8b922&");
+/* harmony import */ var _PayslipDetailComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PayslipDetailComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PayslipDetailComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PayslipDetailComponent_vue_vue_type_template_id_94d8b922___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PayslipDetailComponent_vue_vue_type_template_id_94d8b922___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Admin/PayslipDetailComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PayslipDetailComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PayslipDetailComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PayslipDetailComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=template&id=94d8b922&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=template&id=94d8b922& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PayslipDetailComponent_vue_vue_type_template_id_94d8b922___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PayslipDetailComponent.vue?vue&type=template&id=94d8b922& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/PayslipDetailComponent.vue?vue&type=template&id=94d8b922&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PayslipDetailComponent_vue_vue_type_template_id_94d8b922___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PayslipDetailComponent_vue_vue_type_template_id_94d8b922___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

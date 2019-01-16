@@ -12,6 +12,7 @@ class Payslip extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
 
+    protected $primaryKey = 'id';
 
     // Jsonに追加で含める
     protected $appends = ['name'];
@@ -55,10 +56,12 @@ class Payslip extends Model
         'filename',  // ファイル名 - 明細のファイル名を変更する場合に指定	
         'download',  // ユーザダウンロード回数
         'error',     // CSVエラー内容
+        'delete_user_id', // 削除操作者ID
     ];
 
     // Json に出力する項目
     protected $visible = [
+        'id',        // ID
         'csv_id',    // CSV_ID
         'line',      // CSV行番号
         'ym',        // 明細年月：yyyymm
@@ -70,6 +73,8 @@ class Payslip extends Model
         'download',  // ユーザダウンロード回数
         'error',     // CSVエラー内容
         'name',      // App\User の Name 
+        'deleted_at', // 削除日時
+        'delete_user_id', // 削除操作者ID
     ];
 
     /**
