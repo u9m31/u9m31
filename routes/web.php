@@ -15,34 +15,45 @@ Route::get('/', function () {
     return view('home');
 })->middleware('auth');
 
-Route::get('/pdf', 'DocumentController@downloadPdf')->name('pdf');
-
 // Authentication Routes...
-Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('/login', 'Auth\LoginController@login');
-Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/login',   'Auth\LoginController@showLoginForm') -> name('login.show');
+Route::post('/login',  'Auth\LoginController@login')         -> name('login');
+Route::post('/logout', 'Auth\LoginController@logout')        -> name('logout');
 
 // Admin
-Route::group( ['middleware' => ['auth', 'can:admin']], function() {
+Route::GROUP(['middleware' => ['auth', 'can:admin']], function() {
+    Route::prefix('/api/admin/') -> name('admin.') -> group(function() {
 
-  // USER
-  Route::post('/api/admin/user', 'UserController@index')->name('admin/user');
-  Route::post('/api/admin/user/store', 'UserController@store')->name('admin/user/store');
-  Route::post('/api/admin/user/destroy', 'UserController@destroy')->name('admin/user/destroy');
-  Route::post('/api/admin/user/download', 'UserController@download')->name('admin/user/download');
-  Route::post('/api/admin/user/upload', 'UserController@upload')->name('admin/user/upload');
+        // USER
+        Route::name('user.') -> group(function() {
+            Route::post('user',          'UserController@index')    -> name('index');
+            Route::post('user/store',    'UserController@store')    -> name('store');
+            Route::post('user/destroy',  'UserController@destroy')  -> name('destroy');
+            Route::post('user/download', 'UserController@download') -> name('download');
+            Route::post('user/upload',   'UserController@upload')   -> name('upload');
+        });
 
-  // CsvPayslip
-  Route::post('/api/admin/csvpayslip/index', 'CsvPayslipController@index')->name('admin/csvpayslip/index');
-  Route::post('/api/admin/csvpayslip/upload', 'CsvPayslipController@upload')->name('admin/csvpayslip/upload');
-  Route::post('/api/admin/csvpayslip/delete', 'CsvPayslipController@delete')->name('admin/csvpayslip/delete');
-  Route::post('/api/admin/csvpayslip/publish', 'CsvPayslipController@publish')->name('admin/csvpayslip/publish');
+        // CsvPayslip
+        Route::name('csvpayslip.') -> group(function() {
+            Route::post('csvpayslip/index',   'CsvPayslipController@index')   -> name('index');
+            Route::post('csvpayslip/upload',  'CsvPayslipController@upload')  -> name('upload');
+            Route::post('csvpayslip/delete',  'CsvPayslipController@delete')  -> name('delete');
+            Route::post('csvpayslip/publish', 'CsvPayslipController@publish') -> name('publish');
+        });
 
-  // Payslip
-  Route::post('/api/admin/payslip/index', 'PayslipController@index')->name('admin/payslip/index');
-  Route::post('/api/admin/payslip/delete', 'PayslipController@delete')->name('admin/payslip/delete');
-  Route::post('/api/admin/payslip/pdf', 'PayslipController@pdf')->name('admin/payslip/pdf');
+        // Payslip
+        Route::name('payslip.') -> group(function() {
+            Route::post('payslip/index',  'PayslipController@index')  -> name('index');
+            Route::post('payslip/delete', 'PayslipController@delete') -> name('delete');
+            Route::post('payslip/pdf',    'PayslipController@pdf')    -> name('pdf');
+        });
 
+        // Actlog
+        Route::name('actlog.') -> group(function() {
+            Route::post('actlog',          'ActlogController@index')    -> name('index');
+            Route::post('actlog/download', 'ActlogController@download') -> name('download');
+        });
+    });
 });
 
 // Other

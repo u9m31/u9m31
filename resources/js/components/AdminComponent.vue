@@ -5,6 +5,7 @@
         <r-link linkname='home'></r-link>
         <r-link linkname='admin_user'></r-link>
         <r-link linkname='admin_payslip'></r-link>
+        <r-link linkname='admin_actlog'></r-link>
       </v-list>
     </v-navigation-drawer>
 

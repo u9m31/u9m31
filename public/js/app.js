@@ -1961,6 +1961,204 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/ActlogComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/ActlogComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CsvDownload_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CsvDownload.vue */ "./resources/js/components/Admin/CsvDownload.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'ActlogComponent',
+  components: {
+    'csv-download': _CsvDownload_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: {},
+  data: function data() {
+    return {
+      loading: false,
+      search: '',
+      pagination: {
+        sortBy: 'created_at',
+        descending: true
+      },
+      tabledata: [],
+      headers: [{
+        align: 'center',
+        sortable: false,
+        text: 'No'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: '日時',
+        value: 'created_at'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: '氏名',
+        value: 'name'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: '操作',
+        value: 'action'
+      }, {
+        align: 'center',
+        sortable: true,
+        text: '結果',
+        value: 'status'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: 'データ',
+        value: 'data'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: 'ＩＰ',
+        value: 'remote_addr'
+      }, {
+        align: 'left',
+        sortable: true,
+        text: 'ＵＡ',
+        value: 'user_agent'
+      }]
+    };
+  },
+  created: function created() {
+    if (true) console.log('Actlog Component created.');
+    this.initialize();
+  },
+  methods: {
+    initialize: function initialize() {
+      this.getData();
+    },
+    getData: function getData() {
+      if (true) console.log('Actlog Component getData');
+      this.loading = true;
+      axios.post('/api/admin/actlog').then(function (response) {
+        this.loading = false;
+        if (true) console.log(response);
+
+        if (response.data.data) {
+          this.tabledata = this.setAction(response.data.data);
+        }
+      }.bind(this)).catch(function (error) {
+        this.loading = false;
+        console.log(error);
+
+        if (error.response && [401, 419].includes(error.response.status)) {
+          this.$emit('axios-logout');
+        }
+      }.bind(this));
+    },
+    setAction: function setAction(data) {
+      if (true) console.log('Actlog Component setAction');
+      var wk = '';
+
+      for (var i = 0; i < data.length; i++) {
+        switch (data[i].route) {
+          // Login - Logout
+          case 'show.login':
+            wk = 'ログイン画面';
+            break;
+
+          case 'login':
+            wk = 'ログイン';
+            break;
+
+          case 'logout':
+            wk = 'ログアウト';
+            break;
+          // USER
+
+          case 'admin.user.index':
+            wk = '社員一覧';
+            break;
+
+          case 'admin.user.store':
+            wk = '社員追加';
+            break;
+
+          case 'admin.user.destroy':
+            wk = '社員削除';
+            break;
+
+          case 'admin.user.download':
+            wk = '社員CSV_DL';
+            break;
+
+          case 'admin.user.upload':
+            wk = '社員CSV_UP';
+            break;
+          // OTHER
+
+          default:
+            wk = data[i].route;
+        }
+
+        data[i].action = wk;
+      }
+
+      return data;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/CsvDownload.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/CsvDownload.vue?vue&type=script&lang=js& ***!
@@ -3755,6 +3953,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -57725,6 +57924,169 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/ActlogComponent.vue?vue&type=template&id=38df8df0&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/ActlogComponent.vue?vue&type=template&id=38df8df0& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-flex",
+    [
+      _c(
+        "v-card",
+        { staticClass: "m-3 px-3", attrs: { xs12: "" } },
+        [
+          _c(
+            "v-card-title",
+            { staticClass: "title" },
+            [
+              _c("v-icon", { staticClass: "pr-2" }, [
+                _vm._v(_vm._s(_vm.$route.meta.icon))
+              ]),
+              _vm._v(
+                " " +
+                  _vm._s(_vm.$route.meta.name) +
+                  " " +
+                  _vm._s(/* 操作ログ */) +
+                  "\n      "
+              ),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  "prepend-icon": "search",
+                  label: "Search",
+                  "single-line": "",
+                  "hide-details": "",
+                  clearable: ""
+                },
+                model: {
+                  value: _vm.search,
+                  callback: function($$v) {
+                    _vm.search = $$v
+                  },
+                  expression: "search"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-data-table",
+            {
+              staticClass: "elevation-0 p-1",
+              attrs: {
+                headers: _vm.headers,
+                items: _vm.tabledata,
+                pagination: _vm.pagination,
+                "rows-per-page-items": [10, 25, 50, { text: "All", value: -1 }],
+                loading: _vm.loading,
+                search: _vm.search
+              },
+              on: {
+                "update:pagination": function($event) {
+                  _vm.pagination = $event
+                }
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "items",
+                  fn: function(props) {
+                    return [
+                      _c(
+                        "tr",
+                        [
+                          _c(
+                            "td",
+                            {
+                              staticClass: "text-xs-center",
+                              attrs: { xs1: "" }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  props.index +
+                                    1 +
+                                    (_vm.pagination.page - 1) *
+                                      _vm.pagination.rowsPerPage
+                                )
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.headers.length - 1, function(n) {
+                            return [
+                              _c("td", {
+                                class: "text-xs-" + _vm.headers[n].align,
+                                staticStyle: { "white-space": "nowrap" },
+                                domProps: {
+                                  textContent: _vm._s(
+                                    props.item[_vm.headers[n].value]
+                                  )
+                                }
+                              })
+                            ]
+                          })
+                        ],
+                        2
+                      )
+                    ]
+                  }
+                }
+              ])
+            },
+            [
+              _c("v-progress-linear", {
+                attrs: { slot: "progress", color: "blue", indeterminate: "" },
+                slot: "progress"
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("v-spacer"),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c("csv-download", {
+                attrs: { url: "/api/admin/actlog/download", color: "primary" },
+                on: {
+                  "axios-logout": function($event) {
+                    _vm.$emit("axios-logout")
+                  }
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/CsvDownload.vue?vue&type=template&id=bf9bf01a&":
 /*!********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/CsvDownload.vue?vue&type=template&id=bf9bf01a& ***!
@@ -59666,7 +60028,9 @@ var render = function() {
               _vm._v(" "),
               _c("r-link", { attrs: { linkname: "admin_user" } }),
               _vm._v(" "),
-              _c("r-link", { attrs: { linkname: "admin_payslip" } })
+              _c("r-link", { attrs: { linkname: "admin_payslip" } }),
+              _vm._v(" "),
+              _c("r-link", { attrs: { linkname: "admin_actlog" } })
             ],
             1
           )
@@ -98136,6 +98500,75 @@ if (token) {
 
 /***/ }),
 
+/***/ "./resources/js/components/Admin/ActlogComponent.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/Admin/ActlogComponent.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ActlogComponent_vue_vue_type_template_id_38df8df0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ActlogComponent.vue?vue&type=template&id=38df8df0& */ "./resources/js/components/Admin/ActlogComponent.vue?vue&type=template&id=38df8df0&");
+/* harmony import */ var _ActlogComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ActlogComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Admin/ActlogComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ActlogComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ActlogComponent_vue_vue_type_template_id_38df8df0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ActlogComponent_vue_vue_type_template_id_38df8df0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Admin/ActlogComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/ActlogComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/Admin/ActlogComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActlogComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ActlogComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/ActlogComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ActlogComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/ActlogComponent.vue?vue&type=template&id=38df8df0&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/Admin/ActlogComponent.vue?vue&type=template&id=38df8df0& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ActlogComponent_vue_vue_type_template_id_38df8df0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ActlogComponent.vue?vue&type=template&id=38df8df0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/ActlogComponent.vue?vue&type=template&id=38df8df0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ActlogComponent_vue_vue_type_template_id_38df8df0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ActlogComponent_vue_vue_type_template_id_38df8df0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Admin/CsvDownload.vue":
 /*!*******************************************************!*\
   !*** ./resources/js/components/Admin/CsvDownload.vue ***!
@@ -99018,6 +99451,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_HomeComponent_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/HomeComponent.vue */ "./resources/js/components/HomeComponent.vue");
 /* harmony import */ var _components_Admin_UserComponent_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Admin/UserComponent.vue */ "./resources/js/components/Admin/UserComponent.vue");
 /* harmony import */ var _components_Admin_PayslipComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Admin/PayslipComponent.vue */ "./resources/js/components/Admin/PayslipComponent.vue");
+/* harmony import */ var _components_Admin_ActlogComponent_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/Admin/ActlogComponent.vue */ "./resources/js/components/Admin/ActlogComponent.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]); // 
@@ -99029,6 +99463,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('example-component', _components_ExampleComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('admin-component', _components_AdminComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('r-link', _components_RouterLink_vue__WEBPACK_IMPORTED_MODULE_4__["default"]); // 
+
 
 
 
@@ -99060,6 +99495,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('r-link', _components_Route
       icon: 'fa-file-invoice-dollar'
     }
   }, {
+    path: '/admin/actlog',
+    name: 'admin_actlog',
+    component: _components_Admin_ActlogComponent_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+    meta: {
+      name: '操作履歴',
+      icon: 'list'
+    }
+  }, {
     path: '*',
     redirect: '/home'
   }]
@@ -99085,8 +99528,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('r-link', _components_Route
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /work/radmin/lara/u9m31/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /work/radmin/lara/u9m31/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/radmin/dev/u9m31/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/radmin/dev/u9m31/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
