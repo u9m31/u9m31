@@ -1,4 +1,8 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/js/admin_payslip~js/admin_user.chunk.js": "/js/admin_payslip~js/admin_user.chunk.js?id=0e0085d4e60895b152b1",
+    "/js/app.js": "/js/app.js?id=22cc125c844cb08f82ec",
+    "/css/app.css": "/css/app.css?id=c03621214db1b49d89c3",
+    "/js/admin_actlog.chunk.js": "/js/admin_actlog.chunk.js?id=b504e4ddae27eb94ae3c",
+    "/js/admin_payslip.chunk.js": "/js/admin_payslip.chunk.js?id=35ad878c80cac7624c96",
+    "/js/admin_user.chunk.js": "/js/admin_user.chunk.js?id=b8b49c253fafd863e647"
 }

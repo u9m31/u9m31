@@ -127,6 +127,21 @@
             case 'admin.user.download' : wk = '社員CSV_DL'; break;
             case 'admin.user.upload' :   wk = '社員CSV_UP'; break;
 
+            // CsvPayslip
+            case 'admin.csvpayslip.index' :   wk = '給与明細検索'; break;
+            case 'admin.csvpayslip.upload' :  wk = '給与明細登録'; break;
+            case 'admin.csvpayslip.delete' :  wk = '給与明細削除'; break;
+            case 'admin.csvpayslip.publish' : wk = '給与明細公開'; break;
+
+            // CsvPayslip
+            case 'admin.payslip.index' :  wk = '給与明細一覧'; break;
+            case 'admin.payslip.delete' : wk = '給与明細削除'; break;
+            case 'admin.payslip.pdf' :    wk = '給与明細PDF'; break;
+
+            // Actlog
+            case 'admin.actlog.index' :    wk = '操作履歴一覧'; break;
+            case 'admin.actlog.download' : wk = '操作履歴ダウンロード'; break;
+
             // OTHER
             default: wk = data[i].route
 
